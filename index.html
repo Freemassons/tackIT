@@ -28,9 +28,13 @@
                     elit. Nam sagittis, metus elementum eleifend sollicitudin, ante nisl pulvinar enim, et vestibulum
                     sapien enim et est. Proin viverra ultricies velit, at auctor risus ornare in. Donec dapibus ante
                     luctus lacus sollicitudin, vitae facilisis urna finibus. Nullam pharetra pharetra efficitur.</p>
-                    <p>
-                            Donec aliquet leo libero, nec hendrerit turpis facilisis sit amet. Cras rutrum massa mi, eget tincidunt enim lacinia et. Fusce feugiat eros eget ultrices lobortis. Aliquam ac placerat diam. Etiam faucibus ultricies lectus, in lobortis lectus elementum pharetra. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc vestibulum diam magna, id venenatis nisl convallis vel.
-                    </p>
+                <p>
+                    Donec aliquet leo libero, nec hendrerit turpis facilisis sit amet. Cras rutrum massa mi, eget
+                    tincidunt enim lacinia et. Fusce feugiat eros eget ultrices lobortis. Aliquam ac placerat diam.
+                    Etiam faucibus ultricies lectus, in lobortis lectus elementum pharetra. Pellentesque habitant morbi
+                    tristique senectus et netus et malesuada fames ac turpis egestas. Nunc vestibulum diam magna, id
+                    venenatis nisl convallis vel.
+                </p>
             </div>
         </div>
         <div class="row">
@@ -40,7 +44,7 @@
         </div>
         <div class="row">
             <div class="col s12 m6 l4">
-                <div class="card">
+                <div class="card hoverable">
                     <div class="card-image">
                         <img src="assets/images/chat-icon.jpg">
                         <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
@@ -53,7 +57,7 @@
                 </div>
             </div>
             <div class="col s12 m6 l4">
-                <div class="card">
+                <div class="card hoverable">
                     <div class="card-image">
                         <img src="assets/images/source-code.jpg">
                         <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
@@ -66,7 +70,7 @@
                 </div>
             </div>
             <div class="col s12 m6 l4">
-                <div class="card">
+                <div class="card hoverable">
                     <div class="card-image">
                         <img src="assets/images/trello.jpg">
                         <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
@@ -142,14 +146,21 @@
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">phone</i>
-                        <input id="icon_telephone" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate"
+                        <input id="input-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate"
                             required>
-                        <label for="icon_telephone">Telephone</label>
+                        <label for="input-tel">Telephone</label>
                     </div>
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">email</i>
-                        <input id="input-last" type="email" class="validate" required>
-                        <label for="input-last">Email</label>
+                        <input id="input-email" type="email" class="validate" required>
+                        <label for="input-email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 right-align">
+                        <button class="btn waves-effect waves-light" id="submit-account" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
                     </div>
                 </div>
             </form>
