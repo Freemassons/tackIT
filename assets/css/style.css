@@ -35,6 +35,26 @@
     font-feature-settings: 'liga';
   }
 
+  body {
+      background-image: url('../images/boston-university.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+  }
+
   .screen-account {
       max-width: 1024px;
+      background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .quotes {
+      font-style: italic;
+  }
+
+  .author {
+      font-style: normal;
+      font-weight: bold;
+  }
+
+  .no-opaque {
+      background-color:rgba(255, 255, 255, 1);
   }
