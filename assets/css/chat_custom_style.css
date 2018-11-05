@@ -1,0 +1,159 @@
+/* chat.html materialize CSS override / custom formatting */
+/* Zach Rheaume  --  11/03/18 */
+
+/* ========================================== */
+/* PAGE-WIDE FORMATTING */
+
+body, html {
+    height: 100%;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+input {
+    all: revert;
+}
+i {
+    cursor: default;
+}
+
+.tall{
+    height:100%
+}
+
+#content-main{
+    margin-bottom: 0px;
+}
+
+
+/* ========================================== */
+/* SIDEBAR FORMATTING */
+
+#sidebar-col{
+    padding:0px;
+    margin:0px;
+}
+#sidebar{
+    height:100%;
+}
+.sidebar-panel{
+    /* border: solid grey 1px; */
+    /* border-radius: 3px; */
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    overflow: scroll;
+    /* padding-left: 15px; */
+    padding-right: 8px;
+}
+.sidebar-line{
+    display: flex;
+    justify-content: space-between;
+}
+.sidebar-item {
+    margin-left: 10px;
+    padding-left: 10px;
+    width: 170px;
+    cursor: pointer;
+}
+.sidebar-item:hover{
+    background: #e0f2f1;
+    border-radius: 3px
+}
+.sidebar-item-text{
+    cursor: pointer;
+}
+.sidebar-header {
+    padding: 8px;
+}
+.sidebar-icon{
+    font-size: 14pt;
+    cursor: pointer;
+}
+#panel00{
+    height:32%
+}
+#panel01{
+    height:28%
+}
+#panel02{
+    margin-bottom:5px;
+}
+/* ==|^|==|^|==|^|==|^|==|^|==|^|==|^|==|^|== */
+
+/* ========================================== */
+/* FOCUS PANEL FORMATTING */
+
+#focus-col{
+    padding:0px;
+    margin:0px;
+}
+
+#focus-header {
+    padding: 10px;
+    padding-left: 20px;
+    height: 12%;
+}
+#focus-body{
+    height: 88%;
+}
+.focus-header-info{}
+
+.focus-header-name{
+    font-weight: bolder; 
+}
+
+.focus-header-icon{
+    font-size: 14pt;
+}
+
+.focus-header-members{
+    margin-left: 25px;
+}
+
+/* Chat-Specific */
+.focus-chat{
+    height: 100%;
+    padding-left: 15px;
+}
+
+#chat-log{
+    height: 75%;
+    overflow: scroll;
+    border-bottom: solid 1px grey;
+}
+
+.chat-interact{
+    height: 25%;
+}
+
+.chat-message-caption{}
+
+.chat-message-meta{}
+
+.chat-message{}
+
+.chat-message-content{}
+
+.chat-message-content-text{}
+
+
+/* ==|^|==|^|==|^|==|^|==|^|==|^|==|^|==|^|== */
+
+/* ========================================== */
+/* BOARD FORMATTING */
+
+#board-col{
+    padding:0px;
+    margin:0px;
+}
+
+/* ==|^|==|^|==|^|==|^|==|^|==|^|==|^|==|^|== */
+
+
+/* STYLES BY ELEMENT */
+
+span {
+    font-size: 10pt;
+}
+
+
+
