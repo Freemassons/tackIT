@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>tackIT</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/materialize/css/materialize.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/chat_custom_style.css">
 </head>
@@ -13,25 +13,25 @@
 <body class="tall">
     <div class="tall wrapper">
         <div id="content-main" class="tall row">
-            <div class="tall col l2 remove-gutter" id="sidebar-col" >
+            <div class="tall col l2 remove-gutter" id="sidebar-col">
                 <div id="sidebar" class="tall teal lighten-4">
 
                     <div class="sidebar-header">
-                        <b class="sidebar-header-text">Channels</b>
+                        <b class="sidebar-header-text">Channels</b><i id='add-channel' class='material-icons sidebar-add-icon teal-text text-lighten-2'>add_circle</i>
                     </div>
                     <div id="panel00" class="sidebar-panel">
                         <div id='sidebar-channels-list'></div>
-                    </div>                    
+                    </div>
 
                     <div class="sidebar-header">
-                        <b>Contacts</b>
+                        <b>Contacts</b><i id='add-contact' class='material-icons sidebar-add-icon teal-text text-lighten-2'>add_circle</i>
                     </div>
                     <div id="panel01" class="sidebar-panel">
                         <div id='sidebar-contacts-list'></div>
                     </div>
 
                     <div class="sidebar-header">
-                        <b>Extensions</b>
+                        <b>Extensions</b><i id='add-extension' class='material-icons sidebar-add-icon teal-text text-lighten-2'>add_circle</i>
                     </div>
                     <div id="panel02" class="sidebar-panel">
                         <div id='sidebar-extensions-list'></div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="tall col l7 remove-gutter" id="focus-col" >
+            <div class="tall col l7 remove-gutter" id="focus-col">
                 <div id="focus" class="tall blue-grey lighten-5">
                     <div id='focus-header' class='blue-grey lighten-4'>
                     </div>
@@ -50,24 +50,28 @@
             </div>
 
             <div class="tall col l3 remove-gutter" id="board-col">
-                    <div id="board" class="tall blue-grey lighten-4">
-                        <div class="user-info-panel">
-                            BOARD
+                <div id="board" class="tall">
+                    <div class="board-header blue-grey lighten-4">
+                        <div class="board-header-content">
                         </div>
-                        <p>Will be the location of the Board, where "tacked" items, notifications,
-                            requests will appear. The Board should also have a header with the user's
-                            username that drops down to reveal the user settings.
-                        </p>
                     </div>
+                    <div class="board board-body">
+                        <div class="board board-body-content">
+                            <div class="board board-tacks">
+                                <p>I'm going to hold off on this for now to focus on adding interactivity to the existing components</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    <script type="text/javascript" src="assets/javascript/dummy_script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+    <!-- <script src="assets/materialize/js/materialize.js"></script> -->
+    <script type="text/javascript" src="assets/javascript/chat.js"></script>
 </body>
 
 </html>
