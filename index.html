@@ -13,11 +13,33 @@
     <script src="assets/javascript/vendor/parsley.min.js"></script>
     <script src="assets/javascript/vendor/materialize.min.js"></script>
     <script src="assets/javascript/vendor/firebase.js"></script>
+    <script src="assets/javascript/vendor/moment.min.js"></script>
+    <script src="assets/javascript/vendor/aes.js"></script>
+    <script src="assets/javascript/util.js"></script>
     <script src="assets/javascript/account.js"></script>
 </head>
 
 <body>
     <div class="container screen-account">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i> tackIT</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li class="screen-sign-up"><input type="text" id="login-username" length="15"></li>
+                    <li class="screen-sign-up"><input type="password" id="login-password" length="15"></li>
+                    <li class="screen-sign-up"><i class="material-icons prefix" id="submit-login">search</i></li>
+                    <li class="screen-sign-out"><a href="#" id="submit-logout">Logout</a></li>
+                    <li><a href="collapsible.html">Collaboration</a></li>
+                    <li><a href="mobile.html">My Account</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="collapsible.html"><i class="material-icons prefix">group</i> Collaboration</a></li>
+            <li><a href="mobile.html"><i class="material-icons prefix">account_circle</i> My Account</a></li>
+        </ul>
         <div class="row">
             <div class="col s12">
                 <h1>tackIT</h1>
@@ -112,12 +134,12 @@
                 </blockquote>
             </div>
         </div>
-        <div class="row">
+        <div class="row screen-sign-up">
             <div class="col s12">
                 <h3>Join Today!</h3>
             </div>
         </div>
-        <div class="row">
+        <div class="row screen-sign-up">
             <form class="col s12 no-opaque">
                 <div class="row">
                     <div class="input-field col s12 m6">
@@ -146,8 +168,7 @@
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">phone</i>
-                        <input id="input-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate"
-                            required>
+                        <input id="input-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate" required>
                         <label for="input-tel">Telephone</label>
                     </div>
                     <div class="input-field col s12 m6">
@@ -165,6 +186,32 @@
                 </div>
             </form>
         </div>
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col m6 s12">
+                        <h5 class="white-text">Footer Content</h5>
+                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
+                            content.</p>
+                    </div>
+                    <div class="col m4 offset-m2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2014 Copyright Text
+                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 

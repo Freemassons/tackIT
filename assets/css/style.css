@@ -36,25 +36,50 @@
   }
 
   body {
-      background-image: url('../images/boston-university.jpg');
-      background-size: cover;
-      background-attachment: fixed;
+    background-image: url('../images/boston-university.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+  footer {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  nav {
+    max-width: 1024px;
+    margin: 0 auto;      
+  }
+
+  .screen-sign-out {
+      display: none;
+  }
+
+  .container {
+    width: 100%;
   }
 
   .screen-account {
-      max-width: 1024px;
-      background-color: rgba(255, 255, 255, 0.9);
+    max-width: 1024px;
+    background-color: rgba(255, 255, 255);
   }
 
   .quotes {
-      font-style: italic;
+    font-style: italic;
   }
 
   .author {
-      font-style: normal;
-      font-weight: bold;
+    font-style: normal;
+    font-weight: bold;
   }
 
   .no-opaque {
-      background-color:rgba(255, 255, 255, 1);
+    background-color:rgba(255, 255, 255, 1);
   }
