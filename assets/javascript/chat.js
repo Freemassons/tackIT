@@ -6,203 +6,66 @@ var config = {
     projectId: "tackit-86cc7",
     storageBucket: "tackit-86cc7.appspot.com",
     messagingSenderId: "386217384452"
-  };
-  firebase.initializeApp(config);
+};
 
-  let database = firebase.database;
+firebase.initializeApp(config);
 
-
-// [-[-[ GRAB ]-]-]
-// On login, make a call requesting user data
-// Iterate through channels and request channel data for each
-// Iterate through users and request channel data for each 
-// (Makes most sense to just store user-to-user DM as private channels)
+let memberID = localStorage.getItem("accountId");
+let database = firebase.database();
 
 var data = {
+    user: {
+    },
+    channels: [],
+    default: {
+        channelID: "-LQfdAdsa1T1kTV-MewD"
+    }
+};
 
-    //User data: packet to be served to page directly post login
+activeFocus = { id: data.default.channelID, type: "chat" };
 
-    user:
-    {
-        username: "zrheaume",
-        fullname: "Zach Rheaume",
-        icon: "",
-        email: "zachary.a.rheaume@gmail.com",
-        channels: ["Open_Chat", "Design101", "Project_1_Group"],
-        contacts: ["jameson247", "rodneyBigHorn", "jFitzgerald", "unknownChalupa", "simpleSeerup", "stevePearceHitsBombs", "whosAskin22"],
-        extensions: ["giphy", "Google Maps API", "GeocodeAPI", "WhetherAPI"],
-        board: {
-            tacks: []
-        },
-        settings: {
-            default_channel: "Open_Chat",
+$(document).ready(function () {
+    database.ref("members/" + memberID).once('value').then(function (snapshot) {
+        if (snapshot.val().chatChannels.length < 1) {
+            // console.log("no channels");
+            database.ref("members/" + memberID).update({ chatChannels: ["-LQfdAdsa1T1kTV-MewD"] });
         }
-    },
-    channels:
-        [
-            {
-                name: "Open_Chat",
-                id: "some sort of unique ID besides name",
-                public: true,
-                members: ["jameson247", "rodneyBigHorn", "jFitzgerald", "unknownChalupa", "simpleSeerup", "stevePearceHitsBombs", "whosAskin22"],
-                log: [
-                    {
-                        type: "text",
-                        sender: "jameson247",
-                        timestamp: "11/03/18 13:25",
-                        content: {
-                            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent.",
-                            dependencies: null,
-                            url: null,
-                        }
-                    },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 07:27", content: { text: "Lorem ipsum dolor sit amet." } },
-                    { type: "text", sender: "unknownChalupa", timestamp: "11/03/18 09:40", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent." } },
-                    { type: "text", sender: "zrheaume", timestamp: "11/03/18 09:43", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 09:46", content: { text: "...", url: "https://media1.giphy.com/media/11R5KYi6ZdP8Z2/giphy.gif" } },
-                    { type: "text", sender: "jFitzgerald", timestamp: "11/03/18 12:12", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna" } },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 13:33", content: { text: "Lorem ipsum dolor sit amet." } },
-                    { type: "text", sender: "unknownChalupa", timestamp: "11/03/18 13:35", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent." } },
-                    { type: "text", sender: "zrheaume", timestamp: "11/03/18 13:35", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 13:36", content: { text: "...", url: "https://media1.giphy.com/media/11R5KYi6ZdP8Z2/giphy.gif" } },
-                    { type: "text", sender: "jFitzgerald", timestamp: "11/03/18 13:48", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna" } },
-                ]
-            },
-            {
-                name: "Design101",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: ["jameson247", "rodneyBigHorn"],
-                log: [
-                    {
-                        type: "text",
-                        sender: "jameson247",
-                        timestamp: "11/03/18 13:25",
-                        content: {
-                            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent.",
-                            dependencies: null,
-                            url: null,
-                        }
-                    },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 07:27", content: { text: "Lorem ipsum dolor sit amet." } },
-                    { type: "text", sender: "unknownChalupa", timestamp: "11/03/18 09:40", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent." } },
-                    { type: "text", sender: "zrheaume", timestamp: "11/03/18 09:43", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 09:46", content: { text: "...", url: "https://media1.giphy.com/media/11R5KYi6ZdP8Z2/giphy.gif" } },
-                    { type: "text", sender: "zrheaume", timestamp: "11/03/18 13:35", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 13:36", content: { text: "...", url: "https://media1.giphy.com/media/11R5KYi6ZdP8Z2/giphy.gif" } },
-                ]
-            },
-            {
-                name: "Project_1_Group",
-                id: "some sort of unique ID besides name",
-                public: true,
-                members: ["jFitzgerald", "unknowChalupa", "simpleSeerup", "whosAskin22"],
-                log: [
-                    {
-                        type: "text",
-                        sender: "jameson247",
-                        timestamp: "11/03/18 13:25",
-                        content: {
-                            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent.",
-                            dependencies: null,
-                            url: null,
-                        }
-                    },
-                    { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 07:27", content: { text: "Lorem ipsum dolor sit amet." } },
-                    { type: "text", sender: "unknownChalupa", timestamp: "11/03/18 09:40", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna, vitae luctus eros tempus at. Class aptent." } },
-                    { type: "text", sender: "zrheaume", timestamp: "11/03/18 09:43", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
-                    { type: "text", sender: "jFitzgerald", timestamp: "11/03/18 13:48", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna" } },
+    })
+    database.ref("members/" + memberID).on("value", function (snapshot) {
+        let userDataServed = snapshot.val()
+        data.user.fullName = userDataServed.fullName;
+        data.user.userName = userDataServed.userName;
+        data.user.email = userDataServed.email;
+        data.user.channels = userDataServed.chatChannels;
+        data.user.contacts = userDataServed.friends;
+        for (h = 0; h < data.user.channels.length; h++) {
+            let channelGrab = {};
+            let channelID = data.user.channels[h];
+            database.ref("channels/" + channelID).on("value", function (snapshot) {
+                let channelDataServed = snapshot.val();
+                // console.log(channelDataServed);
+                channelGrab.id = channelID;
+                channelGrab.name = channelDataServed.name;
+                channelGrab.public = channelDataServed.public;
+                channelGrab.members = channelDataServed.members;
+                channelGrab.log = channelDataServed.log
+            });
+            data.channels.push(channelGrab);
+        }
+        // console.log(data);
+    });
+    database.ref("channels/" + activeFocus.id).on("value", function (snapshot) {
+        console.log("New Chat Data Received");
+        build.focus.target(activeFocus);
+    });
+});
 
-                ]
-            },
-            {
-                name: "jameson247",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "rodneyBigHorn",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "jFitzgerald",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "unknownChalupa",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "simpleSeerup",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "stevePearceHitsBombs",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            },
-            {
-                name: "whosAskin22",
-                id: "some sort of unique ID besides name",
-                public: false,
-                members: "!",
-                log: []
-            }
-
-        ],
-    extensions:
-        [
-            {
-                name: "giphy",
-                enabled: true,
-                features: {
-                    search: 'pointer to our hosted API call method'
-                }
-            },
-            { name: "Google Maps API", enabled: false },
-            { name: "GeocodeAPI", enabled: false },
-            { name: "WeatherAPI" }
-        ]
-};
-
-// 
-let defaultFocus = {
-    selector: data.user.settings.default_channel,
-    type: "chat",
-};
-
-let activeFocus = {};
-
-// buildView is gives us methods to dynamically build / rebuild the 
-
-let buildView = {
-
-    // init method calls build methods for all sections
-    init: function () {
-        buildView.sidebar();
-        buildView.focus(defaultFocus);
-        buildView.board();
-        interact.init();
-    },
-
-    // Builds sidebar (most static component)
+let build = {
     sidebar: function () {
+        $("#sidebar-channels-list").html("");
+        $("#sidebar-contacts-list").html("");
+        $("#sidebar-extensions-list").html("");
+
         let populate = function (arr, dest, interactTag, icon) {
             for (a = 0; a < arr.length; a++) {
                 let line = $("<div class='sidebar-line'>")
@@ -221,222 +84,210 @@ let buildView = {
                 $("#" + dest).append(line);
             }
         }
-        populate(data.user.channels, "sidebar-channels-list", "interact-sidebar-channel", "settings");
-        populate(data.user.contacts, "sidebar-contacts-list", "interact-sidebar-contact", "message");
-        populate(data.user.extensions, "sidebar-extensions-list", "interact-sidebar-extension", "");
+        // populate(data.channels, "sidebar-channels-list", "interact-sidebar-channel", "settings");
+        // populate(data.user.contacts, "sidebar-contacts-list", "interact-sidebar-contact", "message");
+        // populate(data.user.extensions, "sidebar-extensions-list", "interact-sidebar-extension", "");
     },
 
-    // Builds focus panel (most dynamic component)
-    // buildview.focus takes a parameter formatted like
-    // this object: { selector : "idendtifier", type ="focusType" }
-
-    focus: function (focusTarget) {
-
-        activeFocus = focusTarget;
-
-        // Clear the parent divs the content will be pushed to
-        $("#focus-header").html("");
-        $("#focus-body").html("");
-
-
-        let focusData = {};
-        // Check to see what type we're working with here
-        //
-        if (focusTarget.type === "chat") {
-
-            for (f = 0; f < data.channels.length; f++) {
-                if (data.channels[f].name === focusTarget.selector) {
-                    focusData = data.channels[f];
-                };
+    focus: {
+        target: function (focusTarget) {
+            console.log("Targeting chat channel");
+            if (focusTarget.type === "chat") {
+                build.focus.chat(focusTarget);
             };
-
-            //Step 2 - Build chat header 
-
-            // Create header html components 
-            let channelInfo = $("<div class='focus-header-info'>");
-            let channelName = $("<h6 class='focus-header-name'>");
-            let channelPrivacy = $("<i class='material-icons focus-header-icon'>");
-            let channelMembers = $("<span class='focus-header-members'>");
-
-
-            channelName.text(focusData.name);
-
-            // Check if we've been given a chat channel or a DM channel
-            if (focusData.members != "!") {
-                channelMembers.text(focusData.members.length);
+        },
+        chat: function (focusTarget) {
+            console.log("Chat channel targeted");
+            activeFocus = focusTarget;
+            focusData = {
+                name: "",
+                members: [],
+                public: false,
+                log: [],
+                notify: []
             };
+            database.ref("channels/" + focusTarget.id).on("value", function (snapshot) {
+                channelDataServed = snapshot.val();
+                focusData.name = channelDataServed.name;
+                focusData.members = channelDataServed.members;
+                focusData.public = channelDataServed.public;
+                focusData.log = channelDataServed.log;
+                console.log("Building chat header and chat body");
+                $("#focus-header").html("");
+                $("#focus-body").html("");
+                build.focus.chatHeader(focusData);
+                build.focus.chatBody(focusData);
+            });
+        },
 
-            if (focusData.public === true) {
-                channelPrivacy.text("public");
-            } else if (focusData.public === false) {
-                channelPrivacy.text("lock_outline");
+        // ++++++++++++
+        // CREATE CHAT HEADER
+        chatHeader: function (channelData) {
+            inidcatorIcon = "";
+            if (channelData.public === true) {
+                inidcatorIcon = "<i class='material-icons focus-header-icon'>public</i>"
+            } else if (channelData.public === false) {
+                inidcatorIcon = "<i class='material-icons focus-header-icon'>lock_outline</i>"
             }
 
-            channelInfo.append(channelName);
-            channelInfo.append(channelPrivacy);
-            channelInfo.append(channelMembers);
-            channelInfo.append($("<i class='material-icons focus-header-icon'>").text("people"));
+            if (channelData.members[0] === "-*") {
+                // "-*" is the only element listed under members in open chat channels  
+                // "-*" => "all users"
+                membersIndicator = " ALL ";
+            } else if (channelData.members[0] === "-!") {
+                // "-!" => DM channel
+            } else {
+                membersIndicator = channelData.members.length;
+            }
 
+            let channelInfoHTML =
+                "<h6 class='focus-header-name'>" + channelData.name + "</h6>" +
+                inidcatorIcon + "<span>" + membersIndicator + "</span>";
+            let channelInfo = $("<div class='focus-header-info'>").html(channelInfoHTML);
             $("#focus-header").append(channelInfo);
-
-            //Step 3 - Build chat body
-            let chatBody = $("<div class='focus-chat'>");
+            console.log("Chat header built");
+        },
+        chatBody: function (channelData) {
+            let chatBodyDiv = $("<div class='focus-chat'>");
             let chatLog = $("<div id='chat-log'>");
-            let chatInteract = $("<div class='chat-interact'>");
-
             // For loop to iterate through each message in the channel log
-            if (focusData.log.length > 0) {
-                for (p = 0; p < focusData.log.length; p++) {
-                    let msgData = focusData.log[p];
+            if (channelData.log.length > 0) {
+                for (p = 0; p < channelData.log.length; p++) {
+                    let msgData = channelData.log[p];
                     let timeSent = moment(msgData.timestamp, "MM/DD/YY HH:mm").format("hh:mm A");
-
                     let msgRow = $("<div class='chat-row'>");
                     let msgBlock = $("<div class='chat-message'>");
                     let msgContent = $("<div class='chat-message-content'>");
-
                     let msgCaption = $("<div class='chat-message-caption'>");
                     let msgSender = $("<span class='chat-message-meta'>").text(msgData.sender);
                     let msgTimestamp = $("<span class='chat-message-meta'>").text(timeSent);
                     msgCaption.append(msgSender);
                     msgCaption.append(msgTimestamp);
-
                     if (msgData.type === "text") {
                         msgContent.append($("<p class='chat-message-content-text'>").text(msgData.content.text));
                     };
-
                     msgBlock.append(msgCaption);
                     msgBlock.append(msgContent);
                     msgRow.append(msgBlock);
                     chatLog.append(msgRow);
                 }
-            }
-            chatBody.append(chatLog);
-            // Messages in the channel's chat log have been populated to the chat body.
-            // Now the chat input needs to be built in
-
+                chatBodyDiv.append(chatLog);
+            };
+            let chatInteract = $("<div class='chat-interact'>");
             let interactWrap = $("<div class='interact-wrapper center-align'>;");
             let interactToolbar = $("<div id='interact-chat-toolbar' class='interact interact-toolkit'>");
-            // let interactDefaultInput = $("<input id='interact-chat-input' class='interact interact-input'>");
-            let interactDefaultInputTextarea = $("<textarea id='interact-chat-input' rows='5' class='interact interact-intput'>");
-            // interactDefaultInput.append(interactDefaultInputTextarea);
-
-            //TEMPORARY
+            let chatDefaultInput = $("<textarea id='interact-chat-input' rows='5' class='interact interact-intput'>");
             interactToolbar.text("TOOL ICONS FOR INTEGRATED CHAT FEATURES");
-
             interactWrap.append(interactToolbar);
-            // interactWrap.append(interactDefaultInput);            
-            interactWrap.append(interactDefaultInputTextarea);
+            interactWrap.append(chatDefaultInput);
             chatInteract.append(interactWrap);
 
-            chatBody.append(chatInteract);
-            $("#focus-body").append(chatBody);
+            chatBodyDiv.append(chatInteract);
+
+            $("#focus-body").append(chatBodyDiv);
             $('#chat-log').scrollTop($('#chat-log')[0].scrollHeight);
-        };
-        if (focusTarget.type === "createChannel") {
 
-            // Build the header and push to page
-
-            let headerInfo = $("<div class='focus-header-info'>");
-            let headerName = $("<h6 class='focus-header-name'>");
-            let channelPrivacy = $("<i class='material-icons focus-header-icon'>");
-
-            headerName.text("Create A New Channel");
-            headerInfo.append(headerName);
-            $("#focus-header").append(headerInfo);
-
-            // Build the form to add the channel
-
-
-            let createChannelHTML = 
-            "<div><br>"+
-            "<i id ='createChannel-private' class='material-icons'>lock_outline</i>" +
-            "<i id ='createChannel-public' class='material-icons'>public</i><br>" +
-            "<b>Privacy</b>" +
-            "</div><br>" +
-            "<div class='focus-body-content'>" +
-            "<b>Channel Name</b><br>" +
-            "<input id='createChannel-name'><br>" +
-            "<b>Add Members</b><br>" +
-            "<input id='createChannel-members'><br>" +
-            "<div>" +
-            "<span>Members added</span><br>" +
-            "</div>" +
-            "<br>" +
-            "<button id='createChannel-submit'>Create Channel</button>" +
-            "</div>";
-
-            $("#focus-body").html(createChannelHTML);
+            $("#interact-chat-input").on("keyup", function (event) {
+                if (event.key === "Enter") {
+                    let inputText = $("#interact-chat-input").val().trim();
+                    if (inputText.length > 0) {
+                        chat.send(inputText, activeFocus.id, "text");
+                    }
+                    $("#interact-chat-input").val("");
+                }
+            });
+            console.log("Chat body built");
         }
-    },
-
-    // Build user board
-    board: function () {
-
-        //Board header
-        let userInfo = $("<div>");
-        let userBoardIcon = $("<i class='material-icons'>");
-        let userBoardName = $("<span>")
-        let userBoardUsername = $("<span>");
-        let userBoardSettings = $("<i class='material-icons'>");
-
-        userBoardIcon;
-        userBoardName.text(data.user.fullname);
-        userBoardUsername.text(data.user.username);
-        userBoardSettings.text("settings_applications");
-
-        userInfo.append(userBoardName);
-        userInfo.append($("<br>"));
-        userInfo.append(userBoardUsername);
-        userInfo.append(userBoardSettings);
-
-        $(".board-header-content").append(userInfo);
-
     }
 }
 
-let interact = {
-
-    init: function () {
-        if (!interact.set.listener.occured) {
-            interact.set.listener.onStartup();
+let chat = {
+    send: function (content, dest, type) {
+        if (type === "text") {
+            database.ref("channels/" + dest).once('value').then(function (snapshot) {
+                let priorLog = snapshot.val().log;
+                let newLog = priorLog;
+                newLog.push(chat.prepareMessage(content));
+                console.log(newLog);
+                database.ref("channels/" + dest).update({ log: newLog });
+            })
         }
     },
-
-    set: {
-        listener: {
-            occured: false,
-            onStartup: function () {
-                interact.set.listener.sidebar();
-                interact.set.listener.focus();
-                interact.set.listener.board();
-                interact.set.listener.occured = true;
-            },
-            sidebar: function () {
-                $("#add-channel").on("click", interact.handle.createChannel)
-                $(".interact-sidebar-channel").on("click", interact.handle.changeChannel);
-                $(".interact-sidebar-contact").on("click", interact.handle.changeChannel);
-            },
-            createChannel : function(){
-                
-            }
-
-        }
-    },
-
-    handle: {
-        changeChannel: function (event) {
-            let viewSelector = event.currentTarget.innerText;
-            let viewType = "chat";
-            buildView.focus({ selector: viewSelector, type: viewType });
-        },
-        createChannel: function(event){
-            buildView.focus({ selector: "", type : "createChannel" });
-    
-        }
-
+    prepareMessage: function (textContent) {
+        let logPacket = {};
+        logPacket.sender = data.user.fullName;
+        logPacket.type = "text";
+        logPacket.content = { text: textContent };
+        logPacket.timestamp = moment().format("MM/DD/YY HH:mm");
+        return logPacket;
     }
 }
 
-$(document).ready(function () {
-    buildView.init();
-});
+
+
+
+
+//     //Step 3 - Build chat body
+//    
+//     
+//     // Messages in the channel's chat log have been populated to the chat body.
+//     // Now the chat input needs to be built in
+
+
+
+// };
+// if (focusTarget.type === "createChannel") {
+
+//     // Build the header and push to page
+
+//     let headerInfo = $("<div class='focus-header-info'>");
+//     let headerName = $("<h6 class='focus-header-name'>");
+//     let channelPrivacy = $("<i class='material-icons focus-header-icon'>");
+
+//     headerName.text("Create A New Channel");
+//     headerInfo.append(headerName);
+//     $("#focus-header").append(headerInfo);
+
+//     // Build the form to add the channel
+
+//     let createChannelHTML =
+//         "<div class='focus-body-content'>" +
+//         "<div><br>" +
+//         "<i id ='createChannel-private' class='material-icons'>lock_outline</i>" +
+//         "<i id ='createChannel-public' class='material-icons'>public</i><br>" +
+//         "<b>Privacy</b>" +
+//         "</div><br>" +
+//         "<b>Channel Name</b><br>" +
+//         "<input id='createChannel-name'><br>" +
+//         "<b>Add Members</b><br>" +
+//         "<input id='createChannel-members'><br>" +
+//         "<div>" +
+//         "<span>Members added</span><br>" +
+//         "</div>" +
+//         "<br>" +
+//         "<button id='createChannel-submit'>Create Channel</button>" +
+//         "</div>";
+
+//     $("#focus-body").html(createChannelHTML);
+
+//     $("#createChannel-submit").on("click", function () {
+
+//         let channelObj =
+//         {
+//             name: "",
+//             id: "",
+//             public: true,
+//             members: [data.user.username],
+//             log: [{ type: "text", sender: "tackIT team", timestamp: "", content: { text: "Welcome to your new tackIT channel! To get started, say something!" } }]
+//         };
+
+//         let channelName = $("#createChannel-name").val()
+//         let channelMembers = [];
+//         channelObj.name = channelName;
+//         channelObj.members = channelMembers;
+
+//         let channelDB = database.ref("channels");
+//         channelDB.push(channelObj);
+//         data.user.channels.push(channelObj);
+//         build.sidebar();
+//     })
