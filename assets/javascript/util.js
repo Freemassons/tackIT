@@ -37,3 +37,21 @@ function getUrlVars()
     }
     return vars;
 }
+
+let emailData = {
+    service_id: 'gmail',
+    user_id: 'user_LhVxw7bxvmWOzZmutMDb6',
+    template_params: {}
+};
+
+function sendMail (emailData) {
+    $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
+        type: 'POST',
+        data: JSON.stringify(emailData),
+        contentType: 'application/json'
+    }).done(function () {
+        console.log('SUCCESS!');
+    }).fail(function (error) {
+        alert('Oops... ' + JSON.stringify(error));
+    });
+}
