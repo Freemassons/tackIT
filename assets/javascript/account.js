@@ -52,6 +52,10 @@ let account = {
             account.chatChannels = snapshot.val().chatChannels;
             account.friends = snapshot.val().friends;
 
+            if (account.avatar) {
+                page.updateIcon();
+            }
+
             statusCon.set(true);
             statusCon.onDisconnect().set(false);
         });
@@ -143,6 +147,30 @@ let account = {
         });
 
         // If everything is valid, create user
+    },
+
+    update: function(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar) {
+        // Validation Routines
+        // Checking if passwords match
+        if (formPassword !== formConfirmPassword) {
+            let errorMessage = "Passwords do not match - please try again"
+            page.showAccountErrorMessage(errorMessage);
+            validInput = false;
+        } else {
+            let encryptedPW = encryptString(formPassword);
+
+            let dbCon = db.connection.ref('members/' + account.id);
+            let dbConnection = dbCon.update({
+                // userName: formUserName,
+                password: encryptedPW,
+                fullName: formFullName,
+                phone: formPhone,
+                avatar: '',
+            });
+
+            // Repopulate any changes
+            account.populate();      
+        }
     },
 
     confirm: function (confirmString, confirmUser) {
@@ -245,6 +273,11 @@ let page = {
     selectorFormErrorList: '.form-error-list',
     selectorConfirmedNext: '.confirmed-next',
     selectorConfirmedNextName: '.confirmed-next-msg',
+    selectorAvatarIcon: '#avatar-icon',
+    selectorScreenIndex: '.screen-index',
+    selectorScreenAccount: '.screen-account',
+    selectorAccountErrorMessage: '.account-error-message',
+    selectorAccountErrorList: '.account-error-list',
 
     hideSignUp: function () {
         $(page.selectorScreenSignUp).hide();
@@ -290,7 +323,58 @@ let page = {
     showConfirmedNext: function (message) {
         $(page.selectorConfirmedNextName).html(message);
         $(page.selectorConfirmedNext).show();
-    }
+    },
+
+    updateIcon: function () {
+        $(page.selectorAvatarIcon).attr('src', 'assets/images/avatars/' + account.avatar)
+    },
+
+    hideScreenIndex: function () {
+        $(page.selectorScreenIndex).hide();
+    },
+
+    showScreenIndex: function () {
+        $(page.selectorScreenIndex).show();
+    },
+
+    hideScreenAccount: function () {
+        $(page.selectorScreenAccount).hide();
+    },
+
+    showScreenAccount: function () {
+        $(page.selectorScreenAccount).show();
+    },
+
+    populateAccountScreen: function () {
+        $('#input-account-nick').val(account.userName);
+        $("label[for='input-account-nick']").toggleClass('active');        
+        
+        $('#input-account-name').val(account.fullName);
+        $("label[for='input-account-name']").toggleClass('active');        
+        
+        $('#input-account-pw').val(decryptString(account.password));
+        $("label[for='input-account-pw']").toggleClass('active');
+
+        $('#input-account-confirm-pw').val(decryptString(account.password));
+        $("label[for='input-account-confirm-pw']").toggleClass('active');
+
+        $('#input-account-email').val(account.email);
+        $("label[for='input-account-email']").toggleClass('active');
+
+        $('#input-account-tel').val(account.phone);
+        $("label[for='input-account-tel']").toggleClass('active');
+    },
+
+    hideAccountErrorMessage: function () {
+        $(page.selectorAccountErrorList).empty();
+        $(page.selectorAccountErrorMessage).hide();
+    },
+
+    showAccountErrorMessage: function (message) {
+        console.log("test");
+        $(page.selectorAccountErrorList).append('<li>' + message + '</li>');
+        $(page.selectorAccountErrorMessage).show();
+    },
 }
 
 $(document).ready(function () {
@@ -302,6 +386,9 @@ $(document).ready(function () {
 
     // Initialize forgot login modal
     $('.modal').modal();
+
+    // Initialize the drop down trigger
+    $(".dropdown-trigger").dropdown();
 
     // Initialize the firebase connection
     db.initializeConnection();
@@ -391,6 +478,54 @@ $(document).ready(function () {
 
         if (validForm) {
             account.create(formUserName, formPassword, formConfirmPassword, formFullName, formEmail, formPhone);
+        }
+    });
+
+    $(document).on('click', '.submit-manage-account', function () {
+        page.hideScreenIndex();
+        page.showScreenAccount();
+        page.populateAccountScreen();
+    });
+
+    $(document).on('click', '.submit-go-home', function () {
+        page.showScreenIndex();
+        page.hideScreenAccount();
+    });
+
+    $(document).on('click', '#submit-account-update', function () {
+        event.preventDefault();
+        let validForm = true;
+
+        // Get Input from Form
+        let formPassword = $("#input-account-pw").val();
+        let formConfirmPassword = $("#input-account-confirm-pw").val();
+        let formFullName = $("#input-account-name").val();
+        let formPhone = $("#input-account-tel").val();
+
+        if (!$("#input-account-pw")[0].checkValidity()) {
+            $("#input-account-pw")[0].reportValidity();
+            validForm = false;
+        }
+
+        if (!$("#input-account-confirm-pw")[0].checkValidity()) {
+            $("#input-account-confirm-pw")[0].reportValidity();
+            validForm = false;
+        }
+
+        if (!$("#input-account-name")[0].checkValidity()) {
+            $("#input-account-name")[0].reportValidity();
+            validForm = false;
+        }
+
+        if (!$("#input-account-tel")[0].checkValidity()) {
+            $("#input-account-tel")[0].reportValidity();
+            validForm = false;
+        }
+
+        if (validForm) {
+            account.update(formPassword, formConfirmPassword, formFullName, formPhone);
+            page.showScreenIndex();
+            page.hideScreenAccount();
         }
     });
 });

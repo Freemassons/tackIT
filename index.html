@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="container screen-account">
+    <div class="container screen-primary-container">
         <div class="navbar-fixed">
             <nav class="nav-extended">
                 <div class="nav-wrapper blue lighten-1">
@@ -35,9 +35,16 @@
                                     class="material-icons left">cloud</i>Login</a></li>
                         <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="forgot-login"><i
                                     class="material-icons left">account_circle</i>Forgot Login</a></li>
-                        <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
+                        <li class="screen-sign-out"><a href="#" class="submit-go-home">Home</a></li>
                         <li class="screen-sign-out"><a href="collapsible.html">Collaboration</a></li>
-                        <li class="screen-sign-out"><a href="mobile.html">My Account</a></li>
+                        <ul id="dropdown1" class="dropdown-content">
+                            <li><a href="#!" class="submit-manage-account">My Account</a></li>
+                            <li><a href="#" class="submit-logout">Logout</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                        <li class="screen-sign-out"><a class="dropdown-trigger" href="#!" data-target="dropdown1"><img
+                                    id="avatar-icon" src="assets/images/avatars/QuestionBlock.png" height="60px"><i
+                                    class="material-icons right">arrow_drop_down</i></a></li>
                     </ul>
                 </div>
                 <!-- Modal Structure -->
@@ -47,13 +54,14 @@
                         <input class="white" type="text" id="forgot-pw" placeholder="test@test.com" style="padding: 5px">
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="submit-forgot-pw">Send Info</a>
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="submit-forgot-pw">Send
+                            Info</a>
                     </div>
                 </div>
                 <div class="nav-content login-message center-align purple accent-1">
                     Invalid Login Information - Please Try Again
                 </div>
-                <div class="nav-content middle-align table">
+                <div class="nav-content middle-align table screen-index">
                     <ul class="section table-of-contents">
                         <li><a href="#introduction">Intro</a></li>
                         <li><a href="#capabilities">Capabilities</a></li>
@@ -75,36 +83,47 @@
             <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
             <li class="screen-sign-out"><a href="collapsible.html"><i class="material-icons prefix">group</i>
                     Collaboration</a></li>
-            <li class="screen-sign-out"><a href="mobile.html"><i class="material-icons prefix">account_circle</i> My
+            <li class="screen-sign-out"><a href="#" class="submit-manage-account"><i class="material-icons prefix">account_circle</i>
+                    My
                     Account</a></li>
         </ul>
-        <div class="row section scrollspy" id="introduction">
-            <div class="col s12">
-                <h1></h1>
-                <div class="row confirmed-next">
-                    <div class="col s12">
-                        <div class="card purple darken-4 center-align confirmed-next-msg">
+        <section class="section scrollspy screen-index" id="introduction">
+            <div class="row">
+                <div class="col s12">
+                    <h1></h1>
+                    <div class="row confirmed-next">
+                        <div class="col s12">
+                            <div class="card purple darken-4 center-align confirmed-next-msg">
+                            </div>
                         </div>
                     </div>
+                    <h1>tackIT</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper sit amet augue ut
+                        luctus.
+                        Nulla enim massa, feugiat ut tellus et, dignissim eleifend erat. Proin porta dignissim
+                        elementum.
+                        Donec imperdiet viverra purus id commodo. Vivamus lacinia ipsum at erat euismod tristique. Sed
+                        eu
+                        eros ipsum. Fusce tempus tortor et accumsan finibus. Nam ut lectus vitae mi maximus porta non
+                        sed
+                        elit. Nam sagittis, metus elementum eleifend sollicitudin, ante nisl pulvinar enim, et
+                        vestibulum
+                        sapien enim et est. Proin viverra ultricies velit, at auctor risus ornare in. Donec dapibus
+                        ante
+                        luctus lacus sollicitudin, vitae facilisis urna finibus. Nullam pharetra pharetra efficitur.</p>
+                    <p>
+                        Donec aliquet leo libero, nec hendrerit turpis facilisis sit amet. Cras rutrum massa mi, eget
+                        tincidunt enim lacinia et. Fusce feugiat eros eget ultrices lobortis. Aliquam ac placerat diam.
+                        Etiam faucibus ultricies lectus, in lobortis lectus elementum pharetra. Pellentesque habitant
+                        morbi
+                        tristique senectus et netus et malesuada fames ac turpis egestas. Nunc vestibulum diam magna,
+                        id
+                        venenatis nisl convallis vel.
+                    </p>
                 </div>
-                <h1>tackIT</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper sit amet augue ut luctus.
-                    Nulla enim massa, feugiat ut tellus et, dignissim eleifend erat. Proin porta dignissim elementum.
-                    Donec imperdiet viverra purus id commodo. Vivamus lacinia ipsum at erat euismod tristique. Sed eu
-                    eros ipsum. Fusce tempus tortor et accumsan finibus. Nam ut lectus vitae mi maximus porta non sed
-                    elit. Nam sagittis, metus elementum eleifend sollicitudin, ante nisl pulvinar enim, et vestibulum
-                    sapien enim et est. Proin viverra ultricies velit, at auctor risus ornare in. Donec dapibus ante
-                    luctus lacus sollicitudin, vitae facilisis urna finibus. Nullam pharetra pharetra efficitur.</p>
-                <p>
-                    Donec aliquet leo libero, nec hendrerit turpis facilisis sit amet. Cras rutrum massa mi, eget
-                    tincidunt enim lacinia et. Fusce feugiat eros eget ultrices lobortis. Aliquam ac placerat diam.
-                    Etiam faucibus ultricies lectus, in lobortis lectus elementum pharetra. Pellentesque habitant morbi
-                    tristique senectus et netus et malesuada fames ac turpis egestas. Nunc vestibulum diam magna, id
-                    venenatis nisl convallis vel.
-                </p>
             </div>
-        </div>
-        <section class="section scrollspy" id="capabilities">
+        </section>
+        <section class="section scrollspy screen-index" id="capabilities">
             <div class="row">
                 <div class="col s12">
                     <h3>Capabilities of tackIT</h3>
@@ -155,7 +174,7 @@
                 </div>
             </div>
         </section>
-        <section class="section scrollspy" id="feedback">
+        <section class="section scrollspy screen-index" id="feedback">
             <div class="row">
                 <div class="col s12">
                     <h3>What People are Saying</h3>
@@ -186,7 +205,7 @@
                 </div>
             </div>
         </section>
-        <section class="section scrollspy" id="join">
+        <section class="section scrollspy screen-index" id="join">
             <div class="row screen-sign-up">
                 <div class="col s12">
                     <h3>Join Today!</h3>
@@ -249,6 +268,73 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </section>
+        <section class="screen-account">
+            <div class="row">
+                <div class="col s12">
+                    <h1>Manage Account</h1>
+                    <p>Username & Email are not modifiable</p>
+                    <form class="col s12 no-opaque">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card purple accent-1 account-error-message">
+                                    <ul class="account-error-list">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="input-account-nick" type="text" minlength="4" class="validate" style="background-color: #ccc"
+                                    readonly>
+                                <label for="input-account-nick">Nick Name</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="input-account-name" type="text" minlength="4" class="validate" required>
+                                <label for="input-account-name">Full Name</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">lock</i>
+                                <input id="input-account-pw" type="password" minlength="8" class="validate" required>
+                                <label for="input-account-pw">Password</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">lock</i>
+                                <input id="input-account-confirm-pw" type="password" minlength="8" class="validate"
+                                    required>
+                                <label for="input-account-confirm-pw">Confirm</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">phone</i>
+                                <input id="input-account-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate"
+                                    required>
+                                <label for="input-account-tel">Telephone</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">email</i>
+                                <input id="input-account-email" type="email" class="validate" style="background-color: #ccc"
+                                    readonly>
+                                <label for="input-account-email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 right-align">
+                                <button class="btn waves-effect waves-light blue darken-4" id="submit-account-update"
+                                    type="submit" name="action">Submit
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
         <footer class="page-footer blue lighten-1">
