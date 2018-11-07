@@ -113,18 +113,57 @@ let account = {
                 friends: ''
             });
 
+            // Defining this one since it's required later.
+            account.userName = formUserName;
             account.id = dbConnection.ref.key;
-
-            account.sendMail(confirmString);
             account.populate();
+
+            let confirmMessage = '<p>Almost done, <span class="confirmed-next-name">' + formUserName + '</span></p>';
+            confirmMessage += '<p>(Check Your Mail)</p>';
+
+            page.showConfirmedNext(confirmMessage);
+            account.sendMail(confirmString);
         }
+    },
+
+    confirm: function (confirmString, confirmUser) {
+        let dbCon = db.connection.ref('members');
+
+        dbCon.orderByChild('userName').equalTo(confirmUser).once("value", function (snapshot) {
+            if (snapshot.val()) {
+                snapshot.forEach(function (data) {
+                    if(data.val().confirmString === confirmString) {
+                        if(!data.val().confirmed) {
+                            account.id = data.ref.key;
+                            console.log(account.id);
+                            dbPlayerCon = db.connection.ref('members/' + account.id);
+
+                            dbPlayerCon.update({
+                                confirmed: true,
+                            });
+
+                            account.populate();
+
+                            let confirmMessage = '<p>Welcome to the cool kids club, <span class="confirmed-next-name">' + confirmUser + '</span></p>';
+                            confirmMessage += '<p>(<a href="#customize">Customize Your Profile Now</a>)</p>';
+
+                            page.showConfirmedNext(confirmMessage);
+                        } else {
+                            // Already confirmed - do nothing
+                            account.id = data.ref.key;
+                            account.populate();
+                        }
+                    }
+                });
+            }
+        });
     },
 
     sendMail: function (confirmString) {
         emailData.template_params.full_name = $("#input-name").val();
         emailData.template_params.user_name = $("#input-nick").val();
         emailData.template_params.email = $("#input-email").val();
-        emailData.template_params.unique_link = "https://freemassons.github.io/tackIT/?confirm=" + confirmString;
+        emailData.template_params.unique_link = "https://freemassons.github.io/tackIT/index.html?confirm=" + confirmString + "&memberName=" + account.userName;
 
         $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
             type: 'POST',
@@ -159,8 +198,11 @@ let account = {
     },
 
     logout: function () {
+        // Clear local storage
         localStorage.clear();
-        location.reload();
+
+        // Remove any query parameters (if present) and reload
+        location = window.location.href.split("?")[0];
     }
 }
 
@@ -171,6 +213,8 @@ let page = {
     selectorMiniLoginMessage: '.login-mini-message',
     selectorFormErrorMessage: '.form-error-message',
     selectorFormErrorList: '.form-error-list',
+    selectorConfirmedNext: '.confirmed-next',
+    selectorConfirmedNextName: '.confirmed-next-msg',
 
     hideSignUp: function () {
         $(page.selectorScreenSignUp).hide();
@@ -206,6 +250,16 @@ let page = {
     showFormErrorMessage: function (message) {
         $(page.selectorFormErrorList).append('<li>' + message + '</li>');
         $(page.selectorFormErrorMessage).show();
+    },
+
+    hideConfirmedNext: function () {
+        $(page.selectorConfirmedNext).empty();
+        $(page.selectorConfirmedNext).hide();
+    },
+
+    showConfirmedNext: function (message) {
+        $(page.selectorConfirmedNextName).html(message);
+        $(page.selectorConfirmedNext).show();
     }
 }
 
@@ -218,6 +272,12 @@ $(document).ready(function () {
 
     // Initialize the firebase connection
     db.initializeConnection();
+
+    // Get Query Parameters
+    let queryParams = getUrlVars();
+    if(queryParams['confirm'] && queryParams['memberName']) {
+        account.confirm(queryParams['confirm'], queryParams['memberName']);
+    }
 
     // If the account has already been created local storage is set
     if (localStorage.getItem('accountId') !== null) {
@@ -288,6 +348,7 @@ $(document).ready(function () {
 
         if (validForm) {
             account.create(formUserName, formPassword, formConfirmPassword, formFullName, formEmail, formPhone);
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         }
     });
 });
