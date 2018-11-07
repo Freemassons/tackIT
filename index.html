@@ -29,7 +29,7 @@
                     <li class="screen-sign-up"><input type="text" id="login-username" length="15"></li>
                     <li class="screen-sign-up"><input type="password" id="login-password" length="15"></li>
                     <li class="screen-sign-up"><i class="material-icons prefix" id="submit-login">search</i></li>
-                    <li class="screen-sign-out"><a href="#" id="submit-logout">Logout</a></li>
+                    <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
                     <li><a href="collapsible.html">Collaboration</a></li>
                     <li><a href="mobile.html">My Account</a></li>
                 </ul>
@@ -37,10 +37,20 @@
         </nav>
 
         <ul class="sidenav" id="mobile-demo">
+            <li class="screen-sign-up"><input type="text" id="login-mini-username" length="15"></li>
+            <li class="screen-sign-up"><input type="password" id="login-mini-password" length="15"></li>
+            <li class="screen-sign-up"><i class="material-icons prefix" id="submit-mini-login">search</i></li>
+            <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
             <li><a href="collapsible.html"><i class="material-icons prefix">group</i> Collaboration</a></li>
             <li><a href="mobile.html"><i class="material-icons prefix">account_circle</i> My Account</a></li>
         </ul>
-        <div class="row">
+        <div class="row center-align scrollspy">
+            <a href="#introduction">Introduction</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#feedback">Customer Feedback</a>
+            <a href="#join" class="screen-sign-up">Join In</a>
+        </div>
+        <div class="row" id="introduction">
             <div class="col s12">
                 <h1>tackIT</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper sit amet augue ut luctus.
@@ -59,7 +69,7 @@
                 </p>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="capabilities">
             <div class="col s12">
                 <h3>Capabilities of tackIT</h3>
             </div>
@@ -105,7 +115,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="feedback">
             <div class="col s12">
                 <h3>What People are Saying</h3>
             </div>
@@ -134,7 +144,7 @@
                 </blockquote>
             </div>
         </div>
-        <div class="row screen-sign-up">
+        <div class="row screen-sign-up" id="join">
             <div class="col s12">
                 <h3>Join Today!</h3>
             </div>

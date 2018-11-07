@@ -158,6 +158,9 @@ $(document).ready(function () {
     // Initiate sidenav bar if it's leveraged (mobile)
     $('.sidenav').sidenav();
 
+    // Initialize scrollspy
+    $('.scrollspy').scrollSpy();
+
     // Initialize the firebase connection
     db.initializeConnection();
 
@@ -167,18 +170,25 @@ $(document).ready(function () {
         account.populate();
     }
 
-    $('#submit-login').on('click', function() {
+    $(document).on('click', '#submit-login', function() {
         let loginUserName= $("#login-username").val();
         let loginPassword= $("#login-password").val();
 
         account.login(loginUserName, loginPassword);
     });
 
-    $('#submit-logout').on('click', function() {
+    $(document).on('click', '#submit-mini-login', function() {
+        let loginUserName= $("#login-mini-username").val();
+        let loginPassword= $("#login-mini-password").val();
+
+        account.login(loginUserName, loginPassword);
+    });
+
+    $(document).on('click', '.submit-logout', function() {
         account.logout();
     });
 
-    $('#submit-account').on('click', function () {
+    $(document).on('click', '#submit-account', function() {
         event.preventDefault();
         
         // Get Input from Form
