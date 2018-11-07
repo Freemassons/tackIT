@@ -21,36 +21,52 @@
 
 <body>
     <div class="container screen-account">
-        <nav>
-            <div class="nav-wrapper">
-                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i> tackIT</a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <ul class="right hide-on-med-and-down">
-                    <li class="screen-sign-up"><input type="text" id="login-username" length="15"></li>
-                    <li class="screen-sign-up"><input type="password" id="login-password" length="15"></li>
-                    <li class="screen-sign-up"><i class="material-icons prefix" id="submit-login">search</i></li>
-                    <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
-                    <li><a href="collapsible.html">Collaboration</a></li>
-                    <li><a href="mobile.html">My Account</a></li>
-                </ul>
-            </div>
-        </nav>
+        <div class="navbar-fixed">
+            <nav class="nav-extended">
+                <div class="nav-wrapper blue lighten-1">
+                    <a href="#!" class="brand-logo"><i class="material-icons">cloud</i> tackIT</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                    <ul class="right hide-on-med-and-down">
+                        <li class="screen-sign-up login-input"><input type="text" id="login-username" length="15"
+                                placeholder="Username" style="background-color: #fff; padding: 0px 5px"></li>
+                        <li class="screen-sign-up login-input"><input type="password" id="login-password" placeholder="Password"
+                                length="15" style="background-color: #fff; padding: 0px 5px"></li>
+                        <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="submit-login"><i
+                                    class="material-icons left">cloud</i>Login</a></li>
+                        <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
+                        <li class="screen-sign-out"><a href="collapsible.html">Collaboration</a></li>
+                        <li class="screen-sign-out"><a href="mobile.html">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="nav-content login-message center-align purple accent-1">
+                    Invalid Login Information - Please Try Again
+                </div>
+                <div class="nav-content middle-align table">
+                    <ul class="section table-of-contents">
+                        <li><a href="#introduction">Intro</a></li>
+                        <li><a href="#capabilities">Capabilities</a></li>
+                        <li><a href="#feedback">Feedback</a></li>
+                        <li><a href="#join" class="screen-sign-up">Join</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
         <ul class="sidenav" id="mobile-demo">
-            <li class="screen-sign-up"><input type="text" id="login-mini-username" length="15"></li>
-            <li class="screen-sign-up"><input type="password" id="login-mini-password" length="15"></li>
-            <li class="screen-sign-up"><i class="material-icons prefix" id="submit-mini-login">search</i></li>
+            <div class="login-mini-message center-align purple accent-1">
+                Invalid Login Information - Please Try Again
+            </div>
+            <li class="screen-sign-up"><input type="text" id="login-mini-username" placeholder="Username" length="15"></li>
+            <li class="screen-sign-up"><input type="password" id="login-mini-password" placeholder="Password" length="15"></li>
+            <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="submit-mini-login"><i
+                        class="material-icons left">cloud</i>Login</a></li>
             <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
-            <li><a href="collapsible.html"><i class="material-icons prefix">group</i> Collaboration</a></li>
-            <li><a href="mobile.html"><i class="material-icons prefix">account_circle</i> My Account</a></li>
+            <li class="screen-sign-out"><a href="collapsible.html"><i class="material-icons prefix">group</i>
+                    Collaboration</a></li>
+            <li class="screen-sign-out"><a href="mobile.html"><i class="material-icons prefix">account_circle</i> My
+                    Account</a></li>
         </ul>
-        <div class="row center-align scrollspy">
-            <a href="#introduction">Introduction</a>
-            <a href="#capabilities">Capabilities</a>
-            <a href="#feedback">Customer Feedback</a>
-            <a href="#join" class="screen-sign-up">Join In</a>
-        </div>
-        <div class="row" id="introduction">
+        <div class="row section scrollspy" id="introduction">
             <div class="col s12">
                 <h1>tackIT</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper sit amet augue ut luctus.
@@ -69,134 +85,154 @@
                 </p>
             </div>
         </div>
-        <div class="row" id="capabilities">
-            <div class="col s12">
-                <h3>Capabilities of tackIT</h3>
+        <section class="section scrollspy" id="capabilities">
+            <div class="row">
+                <div class="col s12">
+                    <h3>Capabilities of tackIT</h3>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m6 l4">
-                <div class="card hoverable">
-                    <div class="card-image">
-                        <img src="assets/images/chat-icon.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <div class="row">
+                <div class="col s12 m6 l4">
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <img src="assets/images/chat-icon.jpg">
+                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">Collaboration Tools</span>
+                            <p>I am a very simple card. I am good at containing small bits of information. I am
+                                convenient
+                                because I require little markup to use effectively.</p>
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <span class="card-title">Collaboration Tools</span>
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient
-                            because I require little markup to use effectively.</p>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <img src="assets/images/source-code.jpg">
+                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">Source Code</span>
+                            <p>I am a very simple card. I am good at containing small bits of information. I am
+                                convenient
+                                because I require little markup to use effectively.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <img src="assets/images/trello.jpg">
+                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">Be Agile</span>
+                            <p>I am a very simple card. I am good at containing small bits of information. I am
+                                convenient
+                                because I require little markup to use effectively.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col s12 m6 l4">
-                <div class="card hoverable">
-                    <div class="card-image">
-                        <img src="assets/images/source-code.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title">Source Code</span>
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient
-                            because I require little markup to use effectively.</p>
+        </section>
+        <section class="section scrollspy" id="feedback">
+            <div class="row">
+                <div class="col s12">
+                    <h3>What People are Saying</h3>
+                </div>
+            </div>
+            <div class="row quotes no-opaque">
+                <div class="col s12 m6 l4">
+                    <blockquote>
+                        At Tesla, my twitter & reddit habits were not the best communication methods so we moved to
+                        tackIT!
+                        <br />
+                        <span class="author">- Elon Musk</span>
+                    </blockquote>
+                </div>
+                <div class="col s12 m6 l4">
+                    <blockquote>
+                        Our bootcamp was struggling to integrate our stories & code, and tackIT solved it!
+                        <br />
+                        <span class="author">- Mason White</span>
+                    </blockquote>
+                </div>
+                <div class="col s12 m6 l4">
+                    <blockquote>
+                        Simple and easy communication improved our speed to market and developer productivity!
+                        <br />
+                        <span class="author">- Tim Cook</span>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+        <section class="section scrollspy" id="join">
+            <div class="row screen-sign-up">
+                <div class="col s12">
+                    <h3>Join Today!</h3>
+                </div>
+            </div>
+            <div class="row screen-sign-up">
+                <div class="col s12">
+                    <div class="card purple accent-1 form-error-message">
+                        <ul class="form-error-list">
+
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="col s12 m6 l4">
-                <div class="card hoverable">
-                    <div class="card-image">
-                        <img src="assets/images/trello.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <div class="row screen-sign-up">
+                <form class="col s12 no-opaque">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="input-nick" type="text" minlength="4" class="validate" required>
+                            <label for="input-nick">Nick Name</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="input-name" type="text" minlength="4" class="validate" required>
+                            <label for="input-name">Full Name</label>
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <span class="card-title">Be Agile</span>
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient
-                            because I require little markup to use effectively.</p>
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="input-pw" type="password" minlength="8" class="validate" required>
+                            <label for="input-pw">Password</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="input-confirm-pw" type="password" minlength="8" class="validate" required>
+                            <label for="input-confirm-pw">Confirm</label>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">phone</i>
+                            <input id="input-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate"
+                                required>
+                            <label for="input-tel">Telephone</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">email</i>
+                            <input id="input-email" type="email" class="validate" required>
+                            <label for="input-email">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 right-align">
+                            <button class="btn waves-effect waves-light blue darken-4" id="submit-account" type="submit"
+                                name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </div>
-        <div class="row" id="feedback">
-            <div class="col s12">
-                <h3>What People are Saying</h3>
-            </div>
-        </div>
-        <div class="row quotes no-opaque">
-            <div class="col s12 m6 l4">
-                <blockquote>
-                    At Tesla, my twitter & reddit habits were not the best communication methods so we moved to
-                    tackIT!
-                    <br />
-                    <span class="author">- Elon Musk</span>
-                </blockquote>
-            </div>
-            <div class="col s12 m6 l4">
-                <blockquote>
-                    Our bootcamp was struggling to integrate our stories & code, and tackIT solved it!
-                    <br />
-                    <span class="author">- Mason White</span>
-                </blockquote>
-            </div>
-            <div class="col s12 m6 l4">
-                <blockquote>
-                    Simple and easy communication improved our speed to market and developer productivity!
-                    <br />
-                    <span class="author">- Tim Cook</span>
-                </blockquote>
-            </div>
-        </div>
-        <div class="row screen-sign-up" id="join">
-            <div class="col s12">
-                <h3>Join Today!</h3>
-            </div>
-        </div>
-        <div class="row screen-sign-up">
-            <form class="col s12 no-opaque">
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="input-nick" type="text" class="validate" required>
-                        <label for="input-nick">Nick Name</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="input-name" type="text" class="validate" required>
-                        <label for="input-name">Full Name</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">lock</i>
-                        <input id="input-pw" type="password" minlength="8" class="validate" required>
-                        <label for="input-pw">Password</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">lock</i>
-                        <input id="input-confirm-pw" type="password" minlength="8" class="validate" required>
-                        <label for="input-confirm-pw">Confirm</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">phone</i>
-                        <input id="input-tel" type="tel" pattern="\d{3}[\-]?\d{3}[\-]?\d{4}" class="validate" required>
-                        <label for="input-tel">Telephone</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">email</i>
-                        <input id="input-email" type="email" class="validate" required>
-                        <label for="input-email">Email</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 right-align">
-                        <button class="btn waves-effect waves-light" id="submit-account" type="submit" name="action">Submit
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <footer class="page-footer">
+        </section>
+        <footer class="page-footer blue lighten-1">
             <div class="container">
                 <div class="row">
                     <div class="col m6 s12">
@@ -216,9 +252,8 @@
                 </div>
             </div>
             <div class="footer-copyright">
-                <div class="container">
-                    © 2014 Copyright Text
-                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                <div class="container center-align">
+                    © 2018 Copyright Text
                 </div>
             </div>
         </footer>

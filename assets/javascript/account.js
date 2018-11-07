@@ -29,6 +29,7 @@ let account = {
     password: '',
     fullName: '',
     email: '',
+    phone: '',
     avatar: '',
     confirmed: false,
     confirmString: '',
@@ -45,11 +46,12 @@ let account = {
         let dbCon = db.connection.ref('members/' + account.id);
         let statusCon = db.connection.ref('members/' + account.id + '/status');
 
-        dbCon.once("value", function(snapshot) {
+        dbCon.once("value", function (snapshot) {
             account.userName = snapshot.val().userName;
             account.password = snapshot.val().password;
             account.fullName = snapshot.val().fullName;
             account.email = snapshot.val().email;
+            account.phone = snapshot.val().phone;
             account.avatar = snapshot.val().avatar;
             account.confirmed = snapshot.val().confirmed;
             account.confirmString = snapshot.val().confirmString;
@@ -67,34 +69,58 @@ let account = {
         page.showSignOut();
     },
 
-    create: function (formUserName, formPassword, formFullName, formEmail, formAvatar) {
-        let timeStamp = moment().unix();
-        let encryptedPW = encryptString(formPassword);
-        confirmString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    create: function (formUserName, formPassword, formConfirmPassword, formFullName, formEmail, formPhone) {
+        let validInput = true;
 
+        // Validation Routines
+        // Checking if passwords match
+        if (formPassword !== formConfirmPassword) {
+            let errorMessage = "Passwords do not match - please try again"
+            page.showFormErrorMessage(errorMessage);
+            validInput = false;
+        }
+
+        // Check if username is taken
         let dbCon = db.connection.ref('members');
-        let dbConnection = dbCon.push({
-            // userName: formUserName,
-            userName: formUserName,
-            password: encryptedPW,
-            fullName: formFullName,
-            email: formEmail,
-            avatar: formAvatar,
-            confirmed: false,
-            confirmString: confirmString,
-            status: '',
-            joined: timeStamp,
-            chatChannels: '',
-            friends: ''
-        });  
-        
-        account.id = dbConnection.ref.key;
+        dbCon.orderByChild('userName').equalTo(formUserName).once("value", function (snapshot) {
+            if (snapshot.val()) {
+                let errorMessage = "User name already exists - please select another"
+                page.showFormErrorMessage(errorMessage);
+                validInput = false;
+            }
+        });
 
-        account.sendMail(confirmString);
-        account.populate();
+        // If everything is valid, create user
+        if (validInput) {
+            let timeStamp = moment().unix();
+            let encryptedPW = encryptString(formPassword);
+            confirmString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+            let dbCon = db.connection.ref('members');
+            let dbConnection = dbCon.push({
+                // userName: formUserName,
+                userName: formUserName,
+                password: encryptedPW,
+                fullName: formFullName,
+                email: formEmail,
+                phone: formPhone,
+                avatar: '',
+                confirmed: false,
+                confirmString: confirmString,
+                status: '',
+                joined: timeStamp,
+                chatChannels: '',
+                friends: ''
+            });
+
+            account.id = dbConnection.ref.key;
+
+            account.sendMail(confirmString);
+            account.populate();
+        }
     },
 
-    sendMail: function(confirmString) {
+    sendMail: function (confirmString) {
         emailData.template_params.full_name = $("#input-name").val();
         emailData.template_params.user_name = $("#input-nick").val();
         emailData.template_params.email = $("#input-email").val();
@@ -108,26 +134,31 @@ let account = {
             console.log('SUCCESS!');
         }).fail(function (error) {
             alert('Oops... ' + JSON.stringify(error));
-        });       
-    },
-
-    login: function(loginUserName, loginPassword) {
-        let dbCon = db.connection.ref('members');
-
-        dbCon.orderByChild('userName').equalTo(loginUserName).once("value", function(snapshot) {
-            snapshot.forEach(function(data) {
-                let decryptedPassword = decryptString(data.val().password);
-                if(decryptedPassword === loginPassword && data.val().userName === loginUserName) {
-                    account.id = data.key;
-                    account.populate();                    
-                } else {
-                    console.log("Trying to hack the account?!?");
-                }
-            });
         });
     },
 
-    logout: function() {
+    login: function (loginUserName, loginPassword) {
+        let dbCon = db.connection.ref('members');
+
+        dbCon.orderByChild('userName').equalTo(loginUserName).once("value", function (snapshot) {
+            if (snapshot.val()) {
+                snapshot.forEach(function (data) {
+                    let decryptedPassword = decryptString(data.val().password);
+                    if (decryptedPassword === loginPassword && data.val().userName === loginUserName) {
+                        account.id = data.key;
+                        account.populate();
+                        page.hideInvalidLogin();
+                    } else {
+                        page.showInvalidLogin();
+                    }
+                });
+            } else {
+                page.showInvalidLogin();
+            }
+        });
+    },
+
+    logout: function () {
         localStorage.clear();
         location.reload();
     }
@@ -136,21 +167,45 @@ let account = {
 let page = {
     selectorScreenSignUp: '.screen-sign-up',
     selectorScreenSignOut: '.screen-sign-out',
+    selectorLoginMessage: '.login-message',
+    selectorMiniLoginMessage: '.login-mini-message',
+    selectorFormErrorMessage: '.form-error-message',
+    selectorFormErrorList: '.form-error-list',
 
-    hideSignUp: function() {
+    hideSignUp: function () {
         $(page.selectorScreenSignUp).hide();
     },
 
-    showSignUp: function() {
+    showSignUp: function () {
         $(page.selectorScreenSignUp).show();
     },
 
-    hideSignOut: function() {
+    hideSignOut: function () {
         $(page.selectorScreenSignOut).hide();
     },
 
-    showSignOut: function() {
+    showSignOut: function () {
         $(page.selectorScreenSignOut).show();
+    },
+
+    hideInvalidLogin: function () {
+        $(page.selectorLoginMessage).hide();
+        $(page.selectorMiniLoginMessage).hide();
+    },
+
+    showInvalidLogin: function () {
+        $(page.selectorLoginMessage).show();
+        $(page.selectorMiniLoginMessage).show();
+    },
+
+    hideFormErrorMessage: function () {
+        $(page.selectorFormErrorList).empty();
+        $(page.selectorFormErrorMessage).hide();
+    },
+
+    showFormErrorMessage: function (message) {
+        $(page.selectorFormErrorList).append('<li>' + message + '</li>');
+        $(page.selectorFormErrorMessage).show();
     }
 }
 
@@ -165,40 +220,74 @@ $(document).ready(function () {
     db.initializeConnection();
 
     // If the account has already been created local storage is set
-    if(localStorage.getItem('accountId') !== null) {
+    if (localStorage.getItem('accountId') !== null) {
         account.id = localStorage.getItem('accountId');
         account.populate();
     }
 
-    $(document).on('click', '#submit-login', function() {
-        let loginUserName= $("#login-username").val();
-        let loginPassword= $("#login-password").val();
+    $(document).on('click', '#submit-login', function () {
+        let loginUserName = $("#login-username").val();
+        let loginPassword = $("#login-password").val();
 
         account.login(loginUserName, loginPassword);
     });
 
-    $(document).on('click', '#submit-mini-login', function() {
-        let loginUserName= $("#login-mini-username").val();
-        let loginPassword= $("#login-mini-password").val();
+    $(document).on('click', '#submit-mini-login', function () {
+        let loginUserName = $("#login-mini-username").val();
+        let loginPassword = $("#login-mini-password").val();
 
         account.login(loginUserName, loginPassword);
     });
 
-    $(document).on('click', '.submit-logout', function() {
+    $(document).on('click', '.submit-logout', function () {
         account.logout();
     });
 
-    $(document).on('click', '#submit-account', function() {
+    $(document).on('click', '#submit-account', function () {
         event.preventDefault();
-        
-        // Get Input from Form
-        let formUserName= $("#input-nick").val();
-        let formPassword= $("#input-pw").val();
-        let formFullName= $("#input-name").val();
-        let formEmail= $("#input-email").val();
-        // let formAvatar= $("#input-avatar").val();
-        let formAvatar = 'BulletBill.png';
+        let validForm = true;
 
-        account.create(formUserName, formPassword, formFullName, formEmail, formAvatar);
+        // Get Input from Form
+        let formUserName = $("#input-nick").val();
+        let formPassword = $("#input-pw").val();
+        let formConfirmPassword = $("#input-confirm-pw").val();
+        let formFullName = $("#input-name").val();
+        let formEmail = $("#input-email").val();
+        let formPhone = $("#input-tel").val();
+
+        // Calling validation functions directly due to preventDefault()
+        if(!$("#input-nick")[0].checkValidity()) {
+            $("#input-nick")[0].reportValidity();
+            validForm = false;
+        }
+
+        if(!$("#input-pw")[0].checkValidity()) {
+            $("#input-pw")[0].reportValidity();
+            validForm = false;
+        }
+        
+        if(!$("#input-confirm-pw")[0].checkValidity()) {
+            $("#input-confirm-pw")[0].reportValidity();
+            validForm = false;
+        }        
+
+        if(!$("#input-name")[0].checkValidity()) {
+            $("#input-name")[0].reportValidity();
+            validForm = false;
+        }
+
+        if(!$("#input-email")[0].checkValidity()) {
+            $("#input-email")[0].reportValidity();
+            validForm = false;
+        }     
+        
+        if(!$("#input-tel")[0].checkValidity()) {
+            $("#input-tel")[0].reportValidity();
+            validForm = false;
+        }    
+
+        if (validForm) {
+            account.create(formUserName, formPassword, formConfirmPassword, formFullName, formEmail, formPhone);
+        }
     });
 });
