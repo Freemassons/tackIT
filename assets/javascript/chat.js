@@ -1,4 +1,17 @@
 
+var config = {
+    apiKey: "AIzaSyBu7V_ug_GY-INtO8tWmJHYZEUltT0YE5s",
+    authDomain: "tackit-86cc7.firebaseapp.com",
+    databaseURL: "https://tackit-86cc7.firebaseio.com",
+    projectId: "tackit-86cc7",
+    storageBucket: "tackit-86cc7.appspot.com",
+    messagingSenderId: "386217384452"
+  };
+  firebase.initializeApp(config);
+
+  let database = firebase.database;
+
+
 // [-[-[ GRAB ]-]-]
 // On login, make a call requesting user data
 // Iterate through channels and request channel data for each
@@ -53,7 +66,6 @@ var data = {
                     { type: "text", sender: "zrheaume", timestamp: "11/03/18 13:35", content: { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fermentum nec mauris sed mattis. Donec quis est lectus. Nulla quis malesuada eros. Aliquam sollicitudin, lectus quis venenatis tempus, est sem dignissim enim, imperdiet venenatis justo eros sit amet metus. Phasellus mollis diam eu nisl elementum luctus. Curabitur varius molestie vehicula. Sed ut pulvinar ipsum. Phasellus mollis lectus id purus accumsan porttitor. Mauris convallis dictum eros, a tempor ligula vestibulum sed. Sed suscipit ut risus at." } },
                     { type: "text", sender: "rodneyBigHorn", timestamp: "11/03/18 13:36", content: { text: "...", url: "https://media1.giphy.com/media/11R5KYi6ZdP8Z2/giphy.gif" } },
                     { type: "text", sender: "jFitzgerald", timestamp: "11/03/18 13:48", content: { text: "Nam efficitur lacinia ex nec pharetra. Praesent efficitur magna urna" } },
-
                 ]
             },
             {
@@ -400,17 +412,14 @@ let interact = {
                 interact.set.listener.occured = true;
             },
             sidebar: function () {
-                $("#add-channel").on("click", interact.handle.addChannel)
+                $("#add-channel").on("click", interact.handle.createChannel)
                 $(".interact-sidebar-channel").on("click", interact.handle.changeChannel);
                 $(".interact-sidebar-contact").on("click", interact.handle.changeChannel);
             },
-            focus: function ( ) {
-                // Chat-specific
-                if(activeFocus.type === "chat"){
-                }
-            },
-            board: function ( ) { },
-            
+            createChannel : function(){
+                
+            }
+
         }
     },
 
@@ -420,8 +429,9 @@ let interact = {
             let viewType = "chat";
             buildView.focus({ selector: viewSelector, type: viewType });
         },
-        addChannel: function(event){
+        createChannel: function(event){
             buildView.focus({ selector: "", type : "createChannel" });
+    
         }
 
     }
