@@ -346,23 +346,14 @@ let page = {
     },
 
     populateAccountScreen: function () {
-        $('#input-account-nick').val(account.userName);
-        $("label[for='input-account-nick']").toggleClass('active');        
-        
-        $('#input-account-name').val(account.fullName);
-        $("label[for='input-account-name']").toggleClass('active');        
-        
+        $('#input-account-nick').val(account.userName);         
+        $('#input-account-name').val(account.fullName);           
         $('#input-account-pw').val(decryptString(account.password));
-        $("label[for='input-account-pw']").toggleClass('active');
-
         $('#input-account-confirm-pw').val(decryptString(account.password));
-        $("label[for='input-account-confirm-pw']").toggleClass('active');
-
         $('#input-account-email').val(account.email);
-        $("label[for='input-account-email']").toggleClass('active');
-
         $('#input-account-tel').val(account.phone);
-        $("label[for='input-account-tel']").toggleClass('active');
+
+        M.updateTextFields();
     },
 
     hideAccountErrorMessage: function () {
