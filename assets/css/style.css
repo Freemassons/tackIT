@@ -96,6 +96,20 @@
     font-size: 15px;
   }
 
+  .confirmed-next {
+    display: none;
+    color: #fff;
+    font-size: 25px;
+  }
+
+  .confirmed-next-msg {
+    padding: 5px;
+  }
+
+  .confirmed-next-name {
+    font-weight: bold;
+  }
+
   .form-error-message {
     display: none;
     padding: 10px 25px 10px 25px;
