@@ -39,7 +39,7 @@
                         <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="forgot-login"><i
                                     class="material-icons left">account_circle</i>Forgot Login</a></li>
                         <li class="screen-sign-out"><a href="#" class="submit-go-home">Home</a></li>
-                        <li class="screen-sign-out"><a href="#" class="submit-go-chat">Chat</a></li>
+                        <li class="screen-sign-out"><a href="chat.html">Chat</a></li>
                         <ul id="dropdown1" class="dropdown-content">
                             <li><a href="#!" class="submit-manage-account">My Account</a></li>
                             <li><a href="#" class="submit-logout">Logout</a></li>
@@ -97,7 +97,7 @@
                     height="200px"></p>
             <li class="screen-sign-out"><a href="#" class="sidenav-close submit-go-home"><i class="material-icons prefix">home</i>
                     Home</a></li>
-            <li class="screen-sign-out"><a href="#" class="sidenav-close submit-go-chat"><i class="material-icons prefix">group</i>
+            <li class="screen-sign-out"><a href="class.html" class="sidenav-close"><i class="material-icons prefix">group</i>
                     Chat</a></li>
             <li class="screen-sign-out"><a href="#" class="submit-manage-account sidenav-close"><i class="material-icons prefix">account_circle</i>
                     Manage Account</a></li>
@@ -561,7 +561,7 @@
                         <h5 class="white-text">Quick Links</h5>
                         <ul>
                             <li><a class="grey-text text-lighten-3 submit-go-home" href="#!">Home</a></li>
-                            <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-go-chat" href="#">Chat</a></li>
+                            <li class="screen-sign-out"><a class="grey-text text-lighten-3" href="chat.html">Chat</a></li>
                             <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-manage-account" href="#">Manage
                                     Account</a></li>
                             <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-logout" href="#">Logout</a></li>
@@ -576,20 +576,17 @@
             </div>
         </footer>
     </div>
-    <!-- Section: Bottom modal for chatbot & chat functionality -->
-    <div class="modal bottom-sheet" id="modal-bottom">
-        <div class="modal-bottom-maximize">
-            <i class="material-icons left small">fullscreen</i>
-        </div>
-        <div class="modal-bottom-close">
-            <i class="material-icons left small">close</i>
-        </div>
-        <div class="modal-content">
-            <h4>Modal Header</h4>
-            <p>A bunch of text</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    <!-- Section: Bottom modal for chatbot functionality -->
+    <div class="hold-position">
+        <button class="circle" type="button">
+            <span class="icon-elements">
+            </span>
+        </button>
+        <div class="modal-wrapper">
+            <header class="modal-header">
+                Output Here
+            </header>
+            <input class="modal-input" type="text" placeholder="Chat Here">
         </div>
     </div>
 </body>

@@ -58,6 +58,10 @@
     margin: 0 auto;      
   }
 
+  html {
+    overflow-y: scroll;
+  }
+
   .screen-sign-out {
       display: none;
   }
@@ -141,15 +145,9 @@
   max-width: 350px;
 }
 
-/* #modal-bottom {
-  position:absolute;
-  Left:0;
-  Right:0;
-  Top:0;
-  Bottom:0;
-  width: 100vw;
-  height: 100vh;
-} */
+.modal-bottom {
+  resize: vertical;
+}
 
 .modal-bottom-maximize {
   position: absolute;
@@ -179,4 +177,106 @@
 /* CHECKED STYLES */
 [type=radio]:checked + img {
   outline: 2px solid #0d47a1;
+}
+
+.hold-position {
+  position: fixed;
+  bottom: 20px;
+  right: 20px
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  background-color: #50E3C2;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transition: transform 200ms ease-in-out;
+  outline: none;
+}
+
+.circle:hover {
+    transform: translateY(-3px);
+}
+  
+.icon-elements {
+  display: inline-flex;
+  background-color: white;
+  width: 30px;
+  height: 22px;
+  border-radius: 3px;
+  position: relative;
+  transition: transform 200ms ease-in-out, width 200ms ease-in-out;
+}
+
+.icon-elements::before {
+    content: "";
+    width: 20px;
+    height: 10px;
+    background: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: skewY(49deg) rotate(-70deg);
+}
+
+  
+.js-icon-active {
+  background-color: white;
+  width: 2px;
+  height: 30px;
+  transform: rotate(-45deg);
+}
+
+.js-icon-active::before {
+    background: white;
+    transform: skew(0deg) rotate(0deg);
+    height: 2px;
+    width: 30px;
+    top: 14px;
+    left: -14px;
+}
+
+.modal-wrapper {
+  box-shadow: 0 5px 10px rgba(black ,.16);
+  border-radius: 3px;
+  width: 300px;
+  height: 400px;
+  position: absolute;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  visibility: hidden;
+  opacity: 0;
+  bottom: 80px;
+  transition: opacity 200ms ease-out,bottom 200ms ease-out;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 2px solid black;
+}
+  
+.modal-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  border: none;
+  border-top: 1px solid #E6E7F0;
+  font-size: 14px;
+  font-weight: 300;
+} 
+/* input::placeholder
+    color: #CACEDB */
+
+.js-modal-active {
+  visibility: visible;
+  opacity: 1;
+  bottom: 100px;
 }
