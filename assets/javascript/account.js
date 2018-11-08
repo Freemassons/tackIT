@@ -150,12 +150,13 @@ let account = {
     },
 
     update: function(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar) {
+        page.hideAccountErrorMessage();
         // Validation Routines
         // Checking if passwords match
         if (formPassword !== formConfirmPassword) {
             let errorMessage = "Passwords do not match - please try again"
             page.showAccountErrorMessage(errorMessage);
-            validInput = false;
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         } else {
             let encryptedPW = encryptString(formPassword);
 
@@ -165,11 +166,14 @@ let account = {
                 password: encryptedPW,
                 fullName: formFullName,
                 phone: formPhone,
-                avatar: '',
+                avatar: formAvatar,
             });
 
             // Repopulate any changes
             account.populate();      
+            page.showScreenIndex();
+            page.hideScreenAccount();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         }
     },
 
@@ -352,6 +356,7 @@ let page = {
         $('#input-account-confirm-pw').val(decryptString(account.password));
         $('#input-account-email').val(account.email);
         $('#input-account-tel').val(account.phone);
+        $('#current-avatar').attr('src', 'assets/images/avatars/' + account.avatar)
 
         M.updateTextFields();
     },
@@ -492,6 +497,7 @@ $(document).ready(function () {
         let formConfirmPassword = $("#input-account-confirm-pw").val();
         let formFullName = $("#input-account-name").val();
         let formPhone = $("#input-account-tel").val();
+        let formAvatar = $("input:radio[name ='inputAvatar']:checked").val();
 
         if (!$("#input-account-pw")[0].checkValidity()) {
             $("#input-account-pw")[0].reportValidity();
@@ -513,10 +519,12 @@ $(document).ready(function () {
             validForm = false;
         }
 
+        if (!formAvatar) {
+            formAvatar = 'QuestionBlock.png';
+        }
+
         if (validForm) {
-            account.update(formPassword, formConfirmPassword, formFullName, formPhone);
-            page.showScreenIndex();
-            page.hideScreenAccount();
+            account.update(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar);
         }
     });
 });
