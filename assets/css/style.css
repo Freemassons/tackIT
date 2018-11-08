@@ -137,6 +137,32 @@
   display: none;
 }
 
+.modal-capabilities {
+  max-width: 350px;
+}
+
+/* #modal-bottom {
+  position:absolute;
+  Left:0;
+  Right:0;
+  Top:0;
+  Bottom:0;
+  width: 100vw;
+  height: 100vh;
+} */
+
+.modal-bottom-maximize {
+  position: absolute;
+  top: 0;
+  right: 25px;
+}
+
+.modal-bottom-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 /* HIDE RADIO */
 [type=radio] { 
   position: absolute;

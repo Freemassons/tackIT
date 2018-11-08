@@ -27,7 +27,7 @@
 
                 <!-- Primary navbar content -->
                 <div class="nav-wrapper blue lighten-1">
-                    <a href="#!" class="brand-logo"><i class="material-icons">cloud</i> tackIT</a>
+                    <a href="#!" class="brand-logo submit-go-home"><i class="material-icons">cloud</i> tackIT</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     <ul class="right hide-on-med-and-down">
                         <li class="screen-sign-up login-input"><input type="text" id="login-username" length="15"
@@ -39,7 +39,7 @@
                         <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="forgot-login"><i
                                     class="material-icons left">account_circle</i>Forgot Login</a></li>
                         <li class="screen-sign-out"><a href="#" class="submit-go-home">Home</a></li>
-                        <li class="screen-sign-out"><a href="chat.html">Chat</a></li>
+                        <li class="screen-sign-out"><a href="#" class="submit-go-chat">Chat</a></li>
                         <ul id="dropdown1" class="dropdown-content">
                             <li><a href="#!" class="submit-manage-account">My Account</a></li>
                             <li><a href="#" class="submit-logout">Logout</a></li>
@@ -50,9 +50,9 @@
                                     class="material-icons right">arrow_drop_down</i></a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Modal Window for a lost password -->
-                <div id="modal1" class="modal purple darken-4">
+                <div id="modal-login-cred" class="modal purple darken-4">
                     <div class="modal-content">
                         <h4>Request Login Credentials</h4>
                         <input class="white" type="text" id="forgot-pw" placeholder="test@test.com" style="padding: 5px">
@@ -93,10 +93,11 @@
                         class="material-icons left">account_circle</i>Forgot Login</a></li>
             <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4 sidenav-close" id="#join"><i
                         class="material-icons left">account_circle</i>Join</a></li>
-            <p class="center-align screen-sign-out"><img id="avatar-icon-mobile" src="assets/images/avatars/QuestionBlock.png" height="200px"></p>
+            <p class="center-align screen-sign-out"><img id="avatar-icon-mobile" src="assets/images/avatars/QuestionBlock.png"
+                    height="200px"></p>
             <li class="screen-sign-out"><a href="#" class="sidenav-close submit-go-home"><i class="material-icons prefix">home</i>
                     Home</a></li>
-            <li class="screen-sign-out"><a href="chat.html" class="sidenav-close"><i class="material-icons prefix">group</i>
+            <li class="screen-sign-out"><a href="#" class="sidenav-close submit-go-chat"><i class="material-icons prefix">group</i>
                     Chat</a></li>
             <li class="screen-sign-out"><a href="#" class="submit-manage-account sidenav-close"><i class="material-icons prefix">account_circle</i>
                     Manage Account</a></li>
@@ -153,13 +154,31 @@
                     <div class="card hoverable">
                         <div class="card-image">
                             <img src="assets/images/chat-icon.jpg">
-                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            <a class="btn-floating halfway-fab waves-effect waves-light red btn-collab"><i class="material-icons">add</i></a>
                         </div>
                         <div class="card-content">
                             <span class="card-title">Collaboration Tools</span>
-                            <p>I am a very simple card. I am good at containing small bits of information. I am
-                                convenient
-                                because I require little markup to use effectively.</p>
+                            <p>The purpose of a collaboration tool is to support a group of two or more individuals to
+                                accomplish a common goal or objective. Collaboration tools can be either of a
+                                non-technological nature such as paper, flipcharts, post-it notes or whiteboards.
+                                Wikipedia.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-collab" class="modal modal-capabilities">
+                    <div class="modal-content">
+                        <h4 class="darken-4">Collaboration</h4>
+                        <div class="center-align">
+                            <img src="assets/images/collab-pic.jpg" width="250" />
+                        </div>
+                        <div>
+                            <ul>
+                                <li>Huddle Rooms</li>
+                                <li>Differed types of meetings</li>
+                                <li>Legacy infrastructure facing end-of-life</li>
+                                <li>Wireless meeting room</li>
+                                <li>Virtual and augmented reality</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -167,13 +186,30 @@
                     <div class="card hoverable">
                         <div class="card-image">
                             <img src="assets/images/source-code.jpg">
-                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            <a class="btn-floating halfway-fab waves-effect waves-light red btn-source"><i class="material-icons">add</i></a>
                         </div>
                         <div class="card-content">
                             <span class="card-title">Source Code</span>
-                            <p>I am a very simple card. I am good at containing small bits of information. I am
-                                convenient
-                                because I require little markup to use effectively.</p>
+                            <p>A component of software configuration management, version control, also known as
+                                revision control or source control, is the management of changes to documents, computer
+                                programs, large web sites, and other collections of information.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-source" class="modal modal-capabilities">
+                    <div class="modal-content">
+                        <h4 class="darken-4">Source Code</h4>
+                        <div class="center-align">
+                            <img src="assets/images/source-code-pic.png" width="250" />
+                        </div>
+                        <div>
+                            <ul>
+                                <li>Publicly Traded Open Source Code Companies</li>
+                                <li>Bigger Big Data Transition Into OSS</li>
+                                <li>App Development Open Source Compatibility</li>
+                                <li>Marketing Centers Transition Toward Open Source Automation Tools</li>
+                                <li>Open Source Code Security</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -181,13 +217,30 @@
                     <div class="card hoverable">
                         <div class="card-image">
                             <img src="assets/images/trello.jpg">
-                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            <a class="btn-floating halfway-fab waves-effect waves-light red btn-agile"><i class="material-icons">add</i></a>
                         </div>
                         <div class="card-content">
                             <span class="card-title">Be Agile</span>
-                            <p>I am a very simple card. I am good at containing small bits of information. I am
-                                convenient
-                                because I require little markup to use effectively.</p>
+                            <p>Agile software development is an approach to software development under which
+                                requirements and solutions evolve through the collaborative effort of self-organizing
+                                and cross-functional teams and their customer/end user.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-agile" class="modal modal-capabilities">
+                    <div class="modal-content">
+                        <h4 class="darken-4">Be Agile</h4>
+                        <div class="center-align">
+                            <img src="assets/images/agile-flow.png" width="250" />
+                        </div>
+                        <div>
+                            <ul>
+                                <li>Vision is Clear</li>
+                                <li>Team Collaboration</li>
+                                <li>Encourage Open Communication</li>
+                                <li>Have an Effective Leader</li>
+                                <li>Recognize and Motivate Each Other</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -508,7 +561,7 @@
                         <h5 class="white-text">Quick Links</h5>
                         <ul>
                             <li><a class="grey-text text-lighten-3 submit-go-home" href="#!">Home</a></li>
-                            <li class="screen-sign-out"><a class="grey-text text-lighten-3" href="chat.html">Chat</a></li>
+                            <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-go-chat" href="#">Chat</a></li>
                             <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-manage-account" href="#">Manage
                                     Account</a></li>
                             <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-logout" href="#">Logout</a></li>
@@ -522,6 +575,22 @@
                 </div>
             </div>
         </footer>
+    </div>
+    <!-- Section: Bottom modal for chatbot & chat functionality -->
+    <div class="modal bottom-sheet" id="modal-bottom">
+        <div class="modal-bottom-maximize">
+            <i class="material-icons left small">fullscreen</i>
+        </div>
+        <div class="modal-bottom-close">
+            <i class="material-icons left small">close</i>
+        </div>
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
     </div>
 </body>
 
