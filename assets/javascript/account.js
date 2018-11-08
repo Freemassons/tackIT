@@ -520,7 +520,7 @@ $(document).ready(function () {
         }
 
         if (!formAvatar) {
-            formAvatar = 'QuestionBlock.png';
+            formAvatar = account.avatar;
         }
 
         if (validForm) {
