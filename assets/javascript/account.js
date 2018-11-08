@@ -109,13 +109,12 @@ let account = {
 
                     let dbCon = db.connection.ref('members');
                     let dbConnection = dbCon.push({
-                        // userName: formUserName,
                         userName: formUserName,
                         password: encryptedPW,
                         fullName: formFullName,
                         email: formEmail,
                         phone: formPhone,
-                        avatar: '',
+                        avatar: 'QuestionBlock.png',
                         confirmed: false,
                         confirmString: confirmString,
                         status: '',
@@ -195,7 +194,7 @@ let account = {
                             account.populate();
 
                             let confirmMessage = '<p>Welcome to the cool kids club, <span class="confirmed-next-name">' + confirmUser + '</span></p>';
-                            confirmMessage += '<p>(<a href="#customize">Customize Your Profile Now</a>)</p>';
+                            confirmMessage += '<p>(<a href="#" class="submit-manage-account">Customize Your Profile Now</a>)</p>';
 
                             page.showConfirmedNext(confirmMessage);
                         } else {
@@ -383,7 +382,11 @@ $(document).ready(function () {
     $('.scrollspy').scrollSpy();
 
     // Initialize forgot login modal
-    $('.modal').modal();
+    $('#modal-login-cred').modal();
+    $('#modal-collab').modal();
+    $('#modal-source').modal();
+    $('#modal-agile').modal();
+    $('#modal-bottom').modal();
 
     // Initialize the drop down trigger
     $(".dropdown-trigger").dropdown();
@@ -418,7 +421,31 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#forgot-login', function () {
-        $('.modal').modal('open');
+        $('#modal-login-cred').modal('open');
+    });
+
+    $(document).on('click', '.btn-collab', function () {
+        $('#modal-collab').modal('open');
+    });
+
+    $(document).on('click', '.btn-source', function () {
+        $('#modal-source').modal('open');
+    });
+
+    $(document).on('click', '.btn-agile', function () {
+        $('#modal-agile').modal('open');
+    });
+
+    $(document).on('click', '.submit-go-chat', function () {
+        $('#modal-bottom').modal('open');
+    });    
+    
+    $(document).on('click', '.modal-bottom-close', function () {
+        $('#modal-bottom').modal('close');
+    });
+
+    $(document).on('click', '.modal-bottom-maximize', function () {
+        // $('#modal-bottom').modal('close');
     });
 
     $(document).on('click', '#submit-forgot-pw', function () {
