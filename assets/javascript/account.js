@@ -278,6 +278,7 @@ let page = {
     selectorConfirmedNext: '.confirmed-next',
     selectorConfirmedNextName: '.confirmed-next-msg',
     selectorAvatarIcon: '#avatar-icon',
+    selectorMobileAvatarIcon: '#avatar-icon-mobile',
     selectorScreenIndex: '.screen-index',
     selectorScreenAccount: '.screen-account',
     selectorAccountErrorMessage: '.account-error-message',
@@ -331,6 +332,7 @@ let page = {
 
     updateIcon: function () {
         $(page.selectorAvatarIcon).attr('src', 'assets/images/avatars/' + account.avatar)
+        $(page.selectorMobileAvatarIcon).attr('src', 'assets/images/avatars/' + account.avatar)
     },
 
     hideScreenIndex: function () {
@@ -520,7 +522,7 @@ $(document).ready(function () {
         }
 
         if (!formAvatar) {
-            formAvatar = 'QuestionBlock.png';
+            formAvatar = account.avatar;
         }
 
         if (validForm) {

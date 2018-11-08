@@ -21,8 +21,11 @@
 
 <body>
     <div class="container screen-primary-container">
+        <!-- Section: Navigation bar, and underlining fields required -->
         <div class="navbar-fixed">
             <nav class="nav-extended">
+
+                <!-- Primary navbar content -->
                 <div class="nav-wrapper blue lighten-1">
                     <a href="#!" class="brand-logo"><i class="material-icons">cloud</i> tackIT</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -36,7 +39,7 @@
                         <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="forgot-login"><i
                                     class="material-icons left">account_circle</i>Forgot Login</a></li>
                         <li class="screen-sign-out"><a href="#" class="submit-go-home">Home</a></li>
-                        <li class="screen-sign-out"><a href="collapsible.html">Collaboration</a></li>
+                        <li class="screen-sign-out"><a href="chat.html">Chat</a></li>
                         <ul id="dropdown1" class="dropdown-content">
                             <li><a href="#!" class="submit-manage-account">My Account</a></li>
                             <li><a href="#" class="submit-logout">Logout</a></li>
@@ -47,7 +50,8 @@
                                     class="material-icons right">arrow_drop_down</i></a></li>
                     </ul>
                 </div>
-                <!-- Modal Structure -->
+                
+                <!-- Modal Window for a lost password -->
                 <div id="modal1" class="modal purple darken-4">
                     <div class="modal-content">
                         <h4>Request Login Credentials</h4>
@@ -58,9 +62,13 @@
                             Info</a>
                     </div>
                 </div>
+
+                <!-- Invalid Login Information -->
                 <div class="nav-content login-message center-align purple accent-1">
                     Invalid Login Information - Please Try Again
                 </div>
+
+                <!-- Scroll Spy - tracks where you are -->
                 <div class="nav-content middle-align table screen-index">
                     <ul class="section table-of-contents">
                         <li><a href="#introduction">Intro</a></li>
@@ -72,21 +80,30 @@
             </nav>
         </div>
 
+        <!-- Section: Sidebar Content -->
         <ul class="sidenav" id="mobile-demo">
             <div class="login-mini-message center-align purple accent-1">
                 Invalid Login Information - Please Try Again
             </div>
-            <li class="screen-sign-up"><input type="text" id="login-mini-username" placeholder="Username" length="15"></li>
-            <li class="screen-sign-up"><input type="password" id="login-mini-password" placeholder="Password" length="15"></li>
+            <li class="screen-sign-up"><input type="text" id="login-mini-username" placeholder="Username"></li>
+            <li class="screen-sign-up"><input type="password" id="login-mini-password" placeholder="Password"></li>
             <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4" id="submit-mini-login"><i
                         class="material-icons left">cloud</i>Login</a></li>
-            <li class="screen-sign-out"><a href="#" class="submit-logout">Logout</a></li>
-            <li class="screen-sign-out"><a href="collapsible.html"><i class="material-icons prefix">group</i>
-                    Collaboration</a></li>
-            <li class="screen-sign-out"><a href="#" class="submit-manage-account"><i class="material-icons prefix">account_circle</i>
-                    My
-                    Account</a></li>
+            <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4 sidenav-close" id="forgot-login"><i
+                        class="material-icons left">account_circle</i>Forgot Login</a></li>
+            <li class="screen-sign-up"><a class="waves-effect waves-light btn blue darken-4 sidenav-close" id="#join"><i
+                        class="material-icons left">account_circle</i>Join</a></li>
+            <p class="center-align screen-sign-out"><img id="avatar-icon-mobile" src="assets/images/avatars/QuestionBlock.png" height="200px"></p>
+            <li class="screen-sign-out"><a href="#" class="sidenav-close submit-go-home"><i class="material-icons prefix">home</i>
+                    Home</a></li>
+            <li class="screen-sign-out"><a href="chat.html" class="sidenav-close"><i class="material-icons prefix">group</i>
+                    Chat</a></li>
+            <li class="screen-sign-out"><a href="#" class="submit-manage-account sidenav-close"><i class="material-icons prefix">account_circle</i>
+                    Manage Account</a></li>
+            <li class="screen-sign-out"><a href="#" class="submit-logout sidenav-close"><i class="material-icons prefix">cloud_off</i>Logout</a></li>
         </ul>
+
+        <!-- Section: Introduction Content, what the site is about -->
         <section class="section scrollspy screen-index" id="introduction">
             <div class="row">
                 <div class="col s12">
@@ -123,6 +140,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section: Capabilities section, for each card -->
         <section class="section scrollspy screen-index" id="capabilities">
             <div class="row">
                 <div class="col s12">
@@ -174,6 +193,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section: Feedback, displaying customer commentary -->
         <section class="section scrollspy screen-index" id="feedback">
             <div class="row">
                 <div class="col s12">
@@ -205,6 +226,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section: Join up! -->
         <section class="section scrollspy screen-index" id="join">
             <div class="row screen-sign-up">
                 <div class="col s12">
@@ -270,6 +293,8 @@
                 </form>
             </div>
         </section>
+
+        <!-- Section: Manage account and update settings -->
         <section class="screen-account">
             <div class="row">
                 <div class="col s12">
@@ -464,21 +489,29 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section: Footer for displaying some quick links and about the FreeMasons -->
         <footer class="page-footer blue lighten-1">
             <div class="container">
                 <div class="row">
-                    <div class="col m6 s12">
-                        <h5 class="white-text">Footer Content</h5>
-                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
-                            content.</p>
+                    <div class="col m4 offset-m2 s12">
+                        <h5 class="white-text"><strong>FreeMasons</strong></h5>
+                        <p class="grey-text text-lighten-4">
+                            <ul>
+                                <li>Zach Rheaume</li>
+                                <li>Darren Anastasoff</li>
+                                <li>Chris Figgins</li>
+                            </ul>
+                        </p>
                     </div>
                     <div class="col m4 offset-m2 s12">
-                        <h5 class="white-text">Links</h5>
+                        <h5 class="white-text">Quick Links</h5>
                         <ul>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                            <li><a class="grey-text text-lighten-3 submit-go-home" href="#!">Home</a></li>
+                            <li class="screen-sign-out"><a class="grey-text text-lighten-3" href="chat.html">Chat</a></li>
+                            <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-manage-account" href="#">Manage
+                                    Account</a></li>
+                            <li class="screen-sign-out"><a class="grey-text text-lighten-3 submit-logout" href="#">Logout</a></li>
                         </ul>
                     </div>
                 </div>
