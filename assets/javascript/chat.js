@@ -140,7 +140,7 @@ var build = {
                     "<h4 class='focus-header-name'>Add A Contact</h4>"
             };
             if (channelData.type === "chat") {
-                for (l = 0; l < channelData.members.length && channelData.members.length > 1; l++) {
+                for (l = 0; l < channelData.members.length && channelData.members[0] != "-*"; l++) {
                     thisMember = channelData.members[l];
                     database.ref("members/" + thisMember).once("value").then(function (snapshot) {
                         let memberFullNameElem = $("<b>").text(snapshot.val().fullName).append($("<br>"));
@@ -233,7 +233,7 @@ var build = {
             let chatInteract = $("<div class='chat-interact'>");
             let interactWrap = $("<div class='interact-wrapper center-align'>;");
             let interactToolbar = $("<div id='interact-chat-toolbar' class='interact interact-toolkit'>");
-            let chatDefaultInput = $("<textarea id='interact-chat-input' rows='5' class='interact interact-intput'>");
+            let chatDefaultInput = $("<textarea placeholder='Type to chat! Press enter to send.' id='interact-chat-input' rows='5' class='interact interact-intput'>");
             // interactToolbar.text("TOOL ICONS FOR INTEGRATED CHAT FEATURES");
             interactWrap.append(interactToolbar);
             interactWrap.append(chatDefaultInput);
