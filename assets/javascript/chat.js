@@ -140,7 +140,7 @@ var build = {
                     "<h4 class='focus-header-name'>Add A Contact</h4>"
             };
             if (channelData.type === "chat") {
-                for (l = 0; l < channelData.members.length && channelData.members.length > 1; l++) {
+                for (l = 0; l < channelData.members.length && channelData.members[0] != "-*"; l++) {
                     thisMember = channelData.members[l];
                     database.ref("members/" + thisMember).once("value").then(function (snapshot) {
                         let memberFullNameElem = $("<b>").text(snapshot.val().fullName).append($("<br>"));
