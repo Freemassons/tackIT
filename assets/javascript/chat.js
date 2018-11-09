@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
 // DELETE THIS BEFORE LIVE V V
-memberID = "-LQjkI1jnHMweU_cJHxc";
+// memberID = "-LQjkI1jnHMweU_cJHxc";
 let database = firebase.database();
 
 var data = {
@@ -128,12 +128,8 @@ var build = {
                 channelInfoHTML =
                     "<div id='channel-info-wrapper'>" +
                     "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6></div>" + "<div id='members-section'><div id='members-indicator-section'>" +
-                    "<span class='focus-header-text'>" + membersIndicator + "</span>" + inidcatorIcon + "<div id='member-list-hover'></div>" + "</div></div>" +
-                    "<div id='add-member-section' class='right-align'><span class='focus-header-text'>Leave This Channel</span>" +
-                    "<i class='material-icons red-text text-darken-1 focus-header-icon' id='leave-channel'>remove_circle</i>" +
-                    "<span class='focus-header-text'>Add Member: </span><input id='add-member-username'>" +
-                    "<i class='material-icons blue-text text-lighten-2 focus-header-icon' id='add-member-existingChannel'>add_box</i>" +
-                    "</div></div>";
+                    "<span class='focus-header-text'>" + membersIndicator + "</span>" + inidcatorIcon + "<div id='member-list-hover'></div>" + "</div></div>"
+                    + "</div>";
             }
             if (channelData.type === "addChannel") {
                 channelInfoHTML =
@@ -164,6 +160,14 @@ var build = {
                 let membersAreAll = $("<b>").text("ALL")
                 $("#member-list-hover").html(membersAreAll);
                 $("#add-member-section").css("display","none");
+            }
+            if (channelData.type==="chat"&&channelData.members[0] != "-*"){
+                let extraHTML = "<div id='add-member-section' class='right-align'><span class='focus-header-text'>Leave This Channel</span>" +
+                "<i class='material-icons red-text text-darken-1 focus-header-icon' id='leave-channel'>remove_circle</i>" +
+                "<span class='focus-header-text'>Add Member: </span><input id='add-member-username'>" +
+                "<i class='material-icons blue-text text-lighten-2 focus-header-icon' id='add-member-existingChannel'>add_box</i>" +
+                "</div>";
+                channelInfo.append(extraHTML);
             }
 
             $("#view-members").off();
