@@ -33,9 +33,9 @@ $(document).ready(function () {
         if (snapshot.val().chatChannels.length < 1) {
             database.ref("members/" + memberID).update({ chatChannels: ["-LQfdAdsa1T1kTV-MewD"] });
         }
-        if (snapshot.val().friends.length < 1) {
-            database.ref("members/" + memberID).update({ friends: ["-LQjgthR777stMT6w7HO", "-LQjkI1jnHMweU_cJHxc", "-LQnrO55nPflGBPm-RDa"] });
-        }
+        // if (snapshot.val().friends.length === "" ) {
+        //     database.ref("members/" + memberID).update({ friends: ["-LQjgthR777stMT6w7HO", "-LQjkI1jnHMweU_cJHxc", "-LQnrO55nPflGBPm-RDa"] });
+        // }
     });
     database.ref("members/" + memberID).on("value", function (snapshot) {
         data.user = snapshot.val();
@@ -292,8 +292,9 @@ var build = {
                             console.log("MATCH");
                             let contactResultElem = $("<span id='"+ i + "'>");
                             contactResultElem.append($("<br>"));
-                            contactResultElem.text(snapshot.val()[i].userName);
+                            contactResultElem.text("Added: " + snapshot.val()[i].userName);
                             $("#search-results").append(contactResultElem);
+                            handle.addContact(i);
                         }
                     }
                 })
@@ -326,7 +327,7 @@ var build = {
         populateContacts: function () {
             console.log('init');
             $("#sidebar-contact-list").html("");
-            for (c = 0; c < data.user.friends.length; c++) {
+            for (c = 0; c < data.friends.length; c++) {
                 console.log('iterate');
                 let currentFriend = data.friends[c];
                 let line = $("<div class='sidebar-line'>")
@@ -373,6 +374,28 @@ var handle = {
     },
     joinChatChannel: function (toJoin) {
 
+    },
+    addContact : function (toAddID) {
+        console.log("adding");
+        console.log("...");
+        database.ref("members/"+toAddID).once("value").then(function(snapshot){
+            let tempContactList = snapshot.val().friends;
+            console.log(tempContactList);
+            console.log("...");
+            tempContactList.push(memberID);
+            console.log(tempContactList);
+            console.log("...");
+            database.ref("members/"+toAddID).update({friends : tempContactList});
+        });
+        database.ref("members/"+memberID).once("value").then(function(snapshot){
+            let tempContactList = snapshot.val().friends;
+            console.log(tempContactList);
+            console.log("...");
+            tempContactList.push(toAddID);
+            console.log(tempContactList);
+            console.log("...");
+            database.ref("members/"+memberID).update({friends : tempContactList});
+        });
     }
 }
 
