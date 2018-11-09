@@ -16,6 +16,7 @@ let db = {
     }
 };
 
+let searchResult;
 let account = {
     id: '',
     userName: '',
@@ -24,6 +25,7 @@ let account = {
     email: '',
     phone: '',
     avatar: '',
+    team: '',
     confirmed: false,
     confirmString: '',
     joined: '',
@@ -49,6 +51,7 @@ let account = {
             account.confirmed = snapshot.val().confirmed;
             account.confirmString = snapshot.val().confirmString;
             account.joined = snapshot.val().joined;
+            account.team = snapshot.val().team;
             account.chatChannels = snapshot.val().chatChannels;
             account.friends = snapshot.val().friends;
 
@@ -137,7 +140,7 @@ let account = {
                     emailData.template_params.full_name = $("#input-name").val();
                     emailData.template_params.user_name = $("#input-nick").val();
                     emailData.template_params.email = $("#input-email").val();
-                    emailData.template_params.unique_link = "https://freemassons.github.io/tackIT/index.html?confirm=" + confirmString + "&memberName=" + account.userName;
+                    emailData.template_params.unique_link = "http://tackit.freemasonsnh.com/index.html?confirm=" + confirmString + "&memberName=" + account.userName;
                     sendMail(emailData);
 
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -148,7 +151,7 @@ let account = {
         // If everything is valid, create user
     },
 
-    update: function(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar) {
+    update: function (formPassword, formConfirmPassword, formFullName, formPhone, formAvatar, formTeam) {
         page.hideAccountErrorMessage();
         // Validation Routines
         // Checking if passwords match
@@ -166,10 +169,11 @@ let account = {
                 fullName: formFullName,
                 phone: formPhone,
                 avatar: formAvatar,
+                team: formTeam
             });
 
             // Repopulate any changes
-            account.populate();      
+            account.populate();
             page.showScreenIndex();
             page.hideScreenAccount();
             $('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -264,7 +268,29 @@ let account = {
                 });
             }
         });
-    }
+    },
+
+    search: function (userName) {
+        let accountInfo = {};
+        let dbCon = db.connection.ref('members');
+
+        // dbCon.orderByChild('userName').equalTo(userName).once("value", function (snapshot) {
+        return dbCon.orderByChild('userName').equalTo(userName).once("value").then((snapshot) => {
+            for (var key in snapshot.val()) {
+                // skip loop if the property is from prototype
+                if (!snapshot.val().hasOwnProperty(key)) continue;
+            
+                var obj = snapshot.val()[key];
+                for (var prop in obj) {
+                    // skip loop if the property is from prototype
+                    if(!obj.hasOwnProperty(prop)) continue;
+                    accountInfo[prop] = obj[prop];
+                }
+            }
+
+            return accountInfo;
+        });
+    },
 }
 
 let page = {
@@ -351,12 +377,13 @@ let page = {
     },
 
     populateAccountScreen: function () {
-        $('#input-account-nick').val(account.userName);         
-        $('#input-account-name').val(account.fullName);           
+        $('#input-account-nick').val(account.userName);
+        $('#input-account-name').val(account.fullName);
         $('#input-account-pw').val(decryptString(account.password));
         $('#input-account-confirm-pw').val(decryptString(account.password));
         $('#input-account-email').val(account.email);
         $('#input-account-tel').val(account.phone);
+        $('#input-account-team').val(account.team);
         $('#current-avatar').attr('src', 'assets/images/avatars/' + account.avatar)
 
         M.updateTextFields();
@@ -438,8 +465,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.submit-go-chat', function () {
         $('#modal-bottom').modal('open');
-    });    
-    
+    });
+
     $(document).on('click', '.modal-bottom-close', function () {
         $('#modal-bottom').modal('close');
     });
@@ -526,6 +553,7 @@ $(document).ready(function () {
         let formConfirmPassword = $("#input-account-confirm-pw").val();
         let formFullName = $("#input-account-name").val();
         let formPhone = $("#input-account-tel").val();
+        let formTeam = $("#input-account-team").val();
         let formAvatar = $("input:radio[name ='inputAvatar']:checked").val();
 
         if (!$("#input-account-pw")[0].checkValidity()) {
@@ -548,12 +576,17 @@ $(document).ready(function () {
             validForm = false;
         }
 
+        if (!$("#input-account-team")[0].checkValidity()) {
+            $("#input-account-team")[0].reportValidity();
+            validForm = false;
+        }
+
         if (!formAvatar) {
             formAvatar = account.avatar;
         }
 
         if (validForm) {
-            account.update(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar);
+            account.update(formPassword, formConfirmPassword, formFullName, formPhone, formAvatar, formTeam);
         }
     });
 
@@ -569,15 +602,15 @@ $(document).ready(function () {
     const elementInput = document.querySelector('#myInput');
 
     const triggerAnimation = () => {
-    const isActive = elementIcon.classList.contains(CLASS_ICON_ACTIVE);
-    console.log(isActive);
-    isActive ? (
-        elementIcon.classList.remove(CLASS_ICON_ACTIVE),
-        elementModal.classList.remove(CLASS_MODAL_ACTIVE)
-    ) : (
-        elementIcon.classList.add(CLASS_ICON_ACTIVE),
-        elementModal.classList.add(CLASS_MODAL_ACTIVE)
-    );
+        const isActive = elementIcon.classList.contains(CLASS_ICON_ACTIVE);
+        console.log(isActive);
+        isActive ? (
+            elementIcon.classList.remove(CLASS_ICON_ACTIVE),
+            elementModal.classList.remove(CLASS_MODAL_ACTIVE)
+        ) : (
+                elementIcon.classList.add(CLASS_ICON_ACTIVE),
+                elementModal.classList.add(CLASS_MODAL_ACTIVE)
+            );
     }
 
     elementCircle.addEventListener('click', () => triggerAnimation());
