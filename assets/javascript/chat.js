@@ -128,7 +128,7 @@ var build = {
                 }
                 channelInfoHTML =
                     "<div id='channel-info-wrapper'>" +
-                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" +
+                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" + 
                     inidcatorIcon + "<span>" + membersIndicator + "</span></div>" +
                     "<div id='add-member-section' class='right-align'><span>Add Member: </span><input><i class='material-icons blue-text text-lighten-2' id='add-member-existingChannel'>add_box</i></div></div>";
             }
@@ -156,8 +156,8 @@ var build = {
                     let msgBlock = $("<div class='chat-message'>");
                     let msgContent = $("<div class='chat-message-content'>");
                     let msgCaption = $("<div class='chat-message-caption'>");
-                    let msgSender = $("<span class='chat-message-meta'>").text(msgData.sender);
-                    let msgTimestamp = $("<span class='chat-message-meta'>").text(timeSent);
+                    let msgSender = $("<b class='chat-message-meta' class='blue-text text-darken-3'>").text("  " + msgData.sender);
+                    let msgTimestamp = $("<span class='chat-message-meta'>").text("  " +  timeSent);
                     msgCaption.append(msgSender);
                     msgCaption.append(msgTimestamp);
                     if (msgData.type === "text") {
@@ -326,7 +326,7 @@ var build = {
         },
         populateContacts: function () {
             console.log('init');
-            $("#sidebar-contact-list").html("");
+            $("#sidebar-contacts-list").html("");
             for (c = 0; c < data.friends.length; c++) {
                 console.log('iterate');
                 let currentFriend = data.friends[c];
