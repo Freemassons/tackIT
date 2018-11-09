@@ -33,6 +33,7 @@ i {
 }
 #sidebar{
     height:100%;
+    border-right: solid 1px grey; 
 }
 .sidebar-panel{
     /* border: solid grey 1px; */
@@ -68,10 +69,9 @@ i {
     cursor: pointer;
 }
 #panel00{
-    height:32%
+    margin-bottom: 35px;
 }
 #panel01{
-    height:28%
 }
 #panel02{
     margin-bottom:5px;
@@ -89,10 +89,12 @@ i {
 #focus-header {
     padding: 10px;
     padding-left: 20px;
-    height: 12%;
+    padding-right: 35px;
+    height: 18%;
+    border-bottom: solid 1px grey;
 }
 #focus-body{
-    height: 88%;
+    height: 82%;
 }
 .focus-header-info{}
 
@@ -101,16 +103,37 @@ i {
 }
 
 .focus-header-icon{
-    font-size: 14pt;
+    font-size: 17pt;
+}
+.focus-header-text{
+    font-size: 15pt;
 }
 
 .focus-header-members{
     margin-left: 25px;
 }
-
+#member-list-hover{
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    width: 350px;
+    padding: 15px;
+    background: lightgray;
+    border: solid 1px grey;
+    border-radius: 6px;
+    visibility: hidden;
+    z-index: 2;
+}
+#member-list-hover:hover{
+    visibility: visible;
+}
 #channel-info{
-    width:50%;
+    width:40%;
     display: inline-flex;
+}
+#members-section{
+    margin-top:15px;
+    position: relative;
 }
 #channel-info-wrapper{
     width:100%;
