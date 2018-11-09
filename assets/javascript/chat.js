@@ -39,7 +39,7 @@ $(document).ready(function () {
     });
     database.ref("members/" + memberID).on("value", function (snapshot) {
         data.user = snapshot.val();
-        if (data.user.friends.length != data.friends.length){
+        if (data.user.friends.length != data.friends.length) {
             data.friends = [];
             database.ref("members/").once("value").then(function (snapshot) {
                 for (p = 0; p < data.user.friends.length; p++) {
@@ -128,9 +128,9 @@ var build = {
                 }
                 channelInfoHTML =
                     "<div id='channel-info-wrapper'>" +
-                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" + 
+                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" +
                     inidcatorIcon + "<span>" + membersIndicator + "</span></div>" +
-                    "<div id='add-member-section' class='right-align'><span>Add Member: </span><input><i class='material-icons blue-text text-lighten-2' id='add-member-existingChannel'>add_box</i></div></div>";
+                    "<div id='add-member-section' class='right-align'><span>Leave This Channel</span><i class='material-icons red-text text-darken-1' id='leave-channel'>remove_circle</i><span>Add Member: </span><input id='add-member-username'><i class='material-icons blue-text text-lighten-2' id='add-member-existingChannel'>add_box</i></div></div>";
             }
             if (channelData.type === "addChannel") {
                 channelInfoHTML =
@@ -142,6 +142,28 @@ var build = {
             };
             channelInfo.html(channelInfoHTML);
             $("#focus-header").append(channelInfo);
+
+            $("#add-member-existingChannel").off();
+            $("#add-member-existingChannel").on("click", function (event) {
+                userNameQuery = $("#add-member-username").val().toLowerCase();
+                $("#add-member-username").val("");
+                database.ref("members/").once("value").then(function (snapshot) {
+                    for (var i in snapshot.val()) {
+                        if (snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()) {
+                            console.log("MATCH");
+                            let contactResultElem = $("<span id='" + i + "'>");
+                            contactResultElem.append($("<br>"));
+                            contactResultElem.text("Added: " + snapshot.val()[i].userName);
+                            handle.addToChannel(i, activeFocus.id);
+                        }
+                    }
+                })
+            })
+            $("#leave-channel").off();
+            $("#leave-channel").on("click", function(){
+                handle.leaveChatChannel(activeFocus.id);
+                handle.changeFocus("addChannel");
+            });
         },
         chatBody: function (channelData) {
             $("#interact-chat-input").off();
@@ -157,7 +179,7 @@ var build = {
                     let msgContent = $("<div class='chat-message-content'>");
                     let msgCaption = $("<div class='chat-message-caption'>");
                     let msgSender = $("<b class='chat-message-meta' class='blue-text text-darken-3'>").text("  " + msgData.sender);
-                    let msgTimestamp = $("<span class='chat-message-meta'>").text("  " +  timeSent);
+                    let msgTimestamp = $("<span class='chat-message-meta'>").text("  " + timeSent);
                     msgCaption.append(msgSender);
                     msgCaption.append(msgTimestamp);
                     if (msgData.type === "text") {
@@ -283,14 +305,14 @@ var build = {
                 "<br><div id='search-results'><br></div>" +
                 "</div>";
             $("#focus-body").html(addContactHTML);
-            $("#addContact-userName-submit").on("click", function (event){
+            $("#addContact-userName-submit").on("click", function (event) {
                 userNameQuery = $("#addContact-username").val().toLowerCase();
                 database.ref("members/").once("value").then(function (snapshot) {
                     console.log(snapshot.val());
-                    for (var i in snapshot.val()){
-                        if( snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()){
+                    for (var i in snapshot.val()) {
+                        if (snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()) {
                             console.log("MATCH");
-                            let contactResultElem = $("<span id='"+ i + "'>");
+                            let contactResultElem = $("<span id='" + i + "'>");
                             contactResultElem.append($("<br>"));
                             contactResultElem.text("Added: " + snapshot.val()[i].userName);
                             $("#search-results").append(contactResultElem);
@@ -304,7 +326,7 @@ var build = {
     },
     sidebar: {
         init: function () {
-            
+
             build.sidebar.populateChannels();
             build.sidebar.populateContacts();
         },
@@ -355,7 +377,7 @@ var handle = {
         if (changeTo === "addChannel") {
             activeFocus.type = "addChannel";
         }
-        if (changeTo === "addContact"){
+        if (changeTo === "addContact") {
             activeFocus.type = "addContact";
         }
         build.focus.target(activeFocus);
@@ -372,29 +394,65 @@ var handle = {
             }
         });
     },
-    joinChatChannel: function (toJoin) {
-
+    addToChannel(newMember,thisChannel){
+        database.ref("channels/"+thisChannel).once("value").then(function(snapshot){
+            let tempMemberArr = snapshot.val().members;
+            if(tempMemberArr.indexOf(newMember)===-1){
+                tempMemberArr.push(newMember);
+                database.ref("channels/"+thisChannel).update({members:tempMemberArr});
+            }
+        });
+        database.ref("members/"+newMember).once("value").then(function(snapshot){
+            let tempArr = snapshot.val().chatChannels;
+            tempArr.push(thisChannel);
+            database.ref("members/"+newMember).update({chatChannels:tempArr})
+        })
     },
-    addContact : function (toAddID) {
+    joinChatChannel: function (toJoin) {
+        database.ref("channels/"+toJoin).once("value").then(function(snapshot){
+            tempMemberArr = snapshot.val().members;
+            if(tempMemberArr.indexOf(newMember)===-1){
+                tempMemberArr.push(memberID);
+                database.ref("channels/"+toJoin).update({members:tempMemberArr});
+            }
+        });
+        data.user.chatChannels.push(toJoin);
+        database.ref("members/"+memberID).update({chatChannels:data.user.chatChannels})
+    },
+    leaveChatChannel: function (toLeave){
+        database.ref("channels/"+toLeave).once("value").then(function(snapshot){
+            tempMemberArr = snapshot.val().members;
+            newMemberArr = tempMemberArr.filter(function(value, index, arr){
+                return value != memberID
+            })
+            database.ref("channels/"+toLeave).update({members: newMemberArr});
+        });
+        userChannels = data.user.chatChannels.filter(function(value,index,arr){
+            return value != toLeave;
+        })
+        database.ref("members/"+memberID).update({chatChannels: userChannels});
+    },
+
+    addContact: function (toAddID) {
         console.log("adding");
         console.log("...");
-        database.ref("members/"+toAddID).once("value").then(function(snapshot){
+        database.ref("members/" + toAddID).once("value").then(function (snapshot) {
             let tempContactList = snapshot.val().friends;
             console.log(tempContactList);
             console.log("...");
             tempContactList.push(memberID);
             console.log(tempContactList);
             console.log("...");
-            database.ref("members/"+toAddID).update({friends : tempContactList});
+            database.ref("members/" + toAddID).update({ friends: tempContactList });
         });
-        database.ref("members/"+memberID).once("value").then(function(snapshot){
+        database.ref("members/" + memberID).once("value").then(function (snapshot) {
             let tempContactList = snapshot.val().friends;
             console.log(tempContactList);
             console.log("...");
             tempContactList.push(toAddID);
             console.log(tempContactList);
             console.log("...");
-            database.ref("members/"+memberID).update({friends : tempContactList});
+            database.ref("members/" + memberID).update({ friends: tempContactList });
         });
     }
 }
