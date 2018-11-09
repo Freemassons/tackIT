@@ -182,7 +182,8 @@
 .hold-position {
   position: fixed;
   bottom: 20px;
-  right: 20px
+  right: 20px;
+  z-index: 1000;
 }
 
 .circle {
@@ -246,7 +247,8 @@
 .modal-wrapper {
   box-shadow: 0 5px 10px rgba(black ,.16);
   border-radius: 3px;
-  width: 600px;
+  max-width: 800px;
+  min-width: 400px;
   height: 400px;
   position: absolute;
   right: 20px;
@@ -260,6 +262,7 @@
   border-radius: 5px;
   background-color: #fff;
   border: 2px solid black;
+  overflow-y: scroll;
 }
   
 .modal-input {
@@ -279,4 +282,15 @@
   visibility: visible;
   opacity: 1;
   bottom: 100px;
+}
+
+.tack-details {
+  font-size: 16px;
+}
+
+.tack-details i {
+  position: relative;
+  top: 5px;
+  left: 0px;
+  color: darkgreen;
 }
