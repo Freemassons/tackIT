@@ -114,6 +114,7 @@ i {
 }
 
 #chat-log{
+    padding-left:15px;
     height: 70%;
     overflow: scroll;
     border-bottom: solid 1px grey;
@@ -145,21 +146,9 @@ i {
     box-shadow: 0px 0px 0px ;
 }
 
-
-/* ==|^|==|^|==|^|==|^|==|^|==|^|==|^|==|^|== */
-
-/* ========================================== */
-/* BOARD FORMATTING */
-
-#board-col{
-    padding: 0px;
-    margin: 0px;
+#createChannel-wrapper{
+    padding-left: 15px;
 }
-.board-header{
-    height: 12%;
-}
-
-/* ==|^|==|^|==|^|==|^|==|^|==|^|==|^|==|^|== */
 
 
 /* STYLES BY ELEMENT */
