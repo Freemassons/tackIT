@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
 // DELETE THIS BEFORE LIVE V V
-memberID = "-LQjkI1jnHMweU_cJHxc";
+// memberID = "-LQjkI1jnHMweU_cJHxc";
 let database = firebase.database();
 
 var data = {
@@ -48,7 +48,6 @@ $(document).ready(function () {
                     friendElem.id = newID;
                     friendElem.userName = snapshot.val()[newID].userName;
                     friendElem.fullName = snapshot.val()[newID].fullName;
-                    console.log(friendElem);
                     data.friends.push(friendElem);
                 }
                 console.log(data.friends);
@@ -113,9 +112,9 @@ var build = {
             membersIndicator = "";
             if (channelData.type === "chat") {
                 if (channelData.public === true) {
-                    inidcatorIcon = "<i class='material-icons focus-header-icon'>public</i>"
+                    inidcatorIcon = "<i id='view-members' class='material-icons focus-header-icon'>public</i>"
                 } else if (channelData.public === false) {
-                    inidcatorIcon = "<i class='material-icons focus-header-icon'>lock_outline</i>"
+                    inidcatorIcon = "<i id='view-members' class='material-icons focus-header-icon'>lock_outline</i>"
                 }
                 if (channelData.members[0] === "-*") {
                     // "-*" is the only element listed under members in open chat channels  
@@ -128,20 +127,52 @@ var build = {
                 }
                 channelInfoHTML =
                     "<div id='channel-info-wrapper'>" +
-                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" +
-                    inidcatorIcon + "<span>" + membersIndicator + "</span></div>" +
-                    "<div id='add-member-section' class='right-align'><span>Leave This Channel</span><i class='material-icons red-text text-darken-1' id='leave-channel'>remove_circle</i><span>Add Member: </span><input id='add-member-username'><i class='material-icons blue-text text-lighten-2' id='add-member-existingChannel'>add_box</i></div></div>";
+                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6></div>" + "<div id='members-section'><div id='members-indicator-section'>" +
+                    "<span class='focus-header-text'>" + membersIndicator + "</span>" + inidcatorIcon + "<div id='member-list-hover'></div>" + "</div></div>" +
+                    "<div id='add-member-section' class='right-align'><span class='focus-header-text'>Leave This Channel</span>" +
+                    "<i class='material-icons red-text text-darken-1 focus-header-icon' id='leave-channel'>remove_circle</i>" +
+                    "<span class='focus-header-text'>Add Member: </span><input id='add-member-username'>" +
+                    "<i class='material-icons blue-text text-lighten-2 focus-header-icon' id='add-member-existingChannel'>add_box</i>" +
+                    "</div></div>";
             }
             if (channelData.type === "addChannel") {
                 channelInfoHTML =
-                    "<h6 class='focus-header-name'>Add A Channel</h6>"
+                    "<h4 class='focus-header-name'>Add A Channel</h4>"
             };
             if (channelData.type === "addContact") {
                 channelInfoHTML =
-                    "<h6 class='focus-header-name'>Add A Contact</h6>"
+                    "<h4 class='focus-header-name'>Add A Contact</h4>"
             };
+            if (channelData.type === "chat") {
+                for (l = 0; l < channelData.members.length && channelData.members.length > 1; l++) {
+                    console.log("...");
+                    thisMember = channelData.members[l];
+                    database.ref("members/" + thisMember).once("value").then(function (snapshot) {
+                        let memberFullNameElem = $("<b>").text(snapshot.val().fullName).append($("<br>"));
+                        let memberUserNameElem = $("<b>").text("'" + snapshot.val().userName + "'");
+                        let memberDiv = $("<div>");
+                        memberDiv.append(memberFullNameElem);
+                        memberDiv.append(memberUserNameElem);
+                        console.log(memberDiv);
+                        $("#member-list-hover").append(memberDiv);
+                    });
+                }
+            }
             channelInfo.html(channelInfoHTML);
             $("#focus-header").append(channelInfo);
+            if (channelData.type==="chat"&&channelData.members[0] === "-*"){
+                console.log()
+                let membersAreAll = $("<b>").text("ALL")
+                $("#member-list-hover").html(membersAreAll);
+            }
+
+            $("#view-members").off();
+            $("#view-members").on("mouseover", function () {
+                $("#member-list-hover").css("visibility", "visible");
+            });
+            $("#view-members").on("mouseout", function () {
+                $("#member-list-hover").css("visibility", "hidden");
+            });
 
             $("#add-member-existingChannel").off();
             $("#add-member-existingChannel").on("click", function (event) {
@@ -160,9 +191,9 @@ var build = {
                 })
             })
             $("#leave-channel").off();
-            $("#leave-channel").on("click", function(){
+            $("#leave-channel").on("click", function () {
                 handle.leaveChatChannel(activeFocus.id);
-                handle.changeFocus("addChannel");
+                build.focus.target({ id: data.user.chatChannels[0], type: "chat" });
             });
         },
         chatBody: function (channelData) {
@@ -196,7 +227,7 @@ var build = {
             let interactWrap = $("<div class='interact-wrapper center-align'>;");
             let interactToolbar = $("<div id='interact-chat-toolbar' class='interact interact-toolkit'>");
             let chatDefaultInput = $("<textarea id='interact-chat-input' rows='5' class='interact interact-intput'>");
-            interactToolbar.text("TOOL ICONS FOR INTEGRATED CHAT FEATURES");
+            // interactToolbar.text("TOOL ICONS FOR INTEGRATED CHAT FEATURES");
             interactWrap.append(interactToolbar);
             interactWrap.append(chatDefaultInput);
             chatInteract.append(interactWrap);
@@ -394,43 +425,43 @@ var handle = {
             }
         });
     },
-    addToChannel(newMember,thisChannel){
-        database.ref("channels/"+thisChannel).once("value").then(function(snapshot){
+    addToChannel(newMember, thisChannel) {
+        database.ref("channels/" + thisChannel).once("value").then(function (snapshot) {
             let tempMemberArr = snapshot.val().members;
-            if(tempMemberArr.indexOf(newMember)===-1){
+            if (tempMemberArr.indexOf(newMember) === -1) {
                 tempMemberArr.push(newMember);
-                database.ref("channels/"+thisChannel).update({members:tempMemberArr});
+                database.ref("channels/" + thisChannel).update({ members: tempMemberArr });
             }
         });
-        database.ref("members/"+newMember).once("value").then(function(snapshot){
+        database.ref("members/" + newMember).once("value").then(function (snapshot) {
             let tempArr = snapshot.val().chatChannels;
             tempArr.push(thisChannel);
-            database.ref("members/"+newMember).update({chatChannels:tempArr})
+            database.ref("members/" + newMember).update({ chatChannels: tempArr })
         })
     },
     joinChatChannel: function (toJoin) {
-        database.ref("channels/"+toJoin).once("value").then(function(snapshot){
+        database.ref("channels/" + toJoin).once("value").then(function (snapshot) {
             tempMemberArr = snapshot.val().members;
-            if(tempMemberArr.indexOf(newMember)===-1){
+            if (tempMemberArr.indexOf(newMember) === -1) {
                 tempMemberArr.push(memberID);
-                database.ref("channels/"+toJoin).update({members:tempMemberArr});
+                database.ref("channels/" + toJoin).update({ members: tempMemberArr });
             }
         });
         data.user.chatChannels.push(toJoin);
-        database.ref("members/"+memberID).update({chatChannels:data.user.chatChannels})
+        database.ref("members/" + memberID).update({ chatChannels: data.user.chatChannels })
     },
-    leaveChatChannel: function (toLeave){
-        database.ref("channels/"+toLeave).once("value").then(function(snapshot){
+    leaveChatChannel: function (toLeave) {
+        database.ref("channels/" + toLeave).once("value").then(function (snapshot) {
             tempMemberArr = snapshot.val().members;
-            newMemberArr = tempMemberArr.filter(function(value, index, arr){
+            newMemberArr = tempMemberArr.filter(function (value, index, arr) {
                 return value != memberID
             })
-            database.ref("channels/"+toLeave).update({members: newMemberArr});
+            database.ref("channels/" + toLeave).update({ members: newMemberArr });
         });
-        userChannels = data.user.chatChannels.filter(function(value,index,arr){
+        userChannels = data.user.chatChannels.filter(function (value, index, arr) {
             return value != toLeave;
         })
-        database.ref("members/"+memberID).update({chatChannels: userChannels});
+        database.ref("members/" + memberID).update({ chatChannels: userChannels });
     },
 
     addContact: function (toAddID) {
