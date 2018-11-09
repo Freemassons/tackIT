@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
 // DELETE THIS BEFORE LIVE V V
-// memberID = "-LQjkI1jnHMweU_cJHxc";
+memberID = "-LQjkI1jnHMweU_cJHxc";
 let database = firebase.database();
 
 var data = {
@@ -145,7 +145,6 @@ var build = {
             };
             if (channelData.type === "chat") {
                 for (l = 0; l < channelData.members.length && channelData.members.length > 1; l++) {
-                    console.log("...");
                     thisMember = channelData.members[l];
                     database.ref("members/" + thisMember).once("value").then(function (snapshot) {
                         let memberFullNameElem = $("<b>").text(snapshot.val().fullName).append($("<br>"));
@@ -153,7 +152,7 @@ var build = {
                         let memberDiv = $("<div>");
                         memberDiv.append(memberFullNameElem);
                         memberDiv.append(memberUserNameElem);
-                        console.log(memberDiv);
+                        memberDiv.append($("<div class='divider'>"));
                         $("#member-list-hover").append(memberDiv);
                     });
                 }
@@ -164,6 +163,7 @@ var build = {
                 console.log()
                 let membersAreAll = $("<b>").text("ALL")
                 $("#member-list-hover").html(membersAreAll);
+                $("#add-member-section").css("display","none");
             }
 
             $("#view-members").off();
@@ -178,17 +178,20 @@ var build = {
             $("#add-member-existingChannel").on("click", function (event) {
                 userNameQuery = $("#add-member-username").val().toLowerCase();
                 $("#add-member-username").val("");
-                database.ref("members/").once("value").then(function (snapshot) {
-                    for (var i in snapshot.val()) {
-                        if (snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()) {
-                            console.log("MATCH");
-                            let contactResultElem = $("<span id='" + i + "'>");
-                            contactResultElem.append($("<br>"));
-                            contactResultElem.text("Added: " + snapshot.val()[i].userName);
-                            handle.addToChannel(i, activeFocus.id);
+                if (userNameQuery.length > 1){
+                    database.ref("members/").once("value").then(function (snapshot) {
+                        for (var i in snapshot.val()) {
+                            if (snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()) {
+                                console.log("MATCH");
+                                let contactResultElem = $("<span id='" + i + "'>");
+                                contactResultElem.append($("<br>"));
+                                contactResultElem.text("Added: " + snapshot.val()[i].userName);
+                                handle.addToChannel(i, activeFocus.id);
+                            }
                         }
-                    }
-                })
+                    });
+                }
+
             })
             $("#leave-channel").off();
             $("#leave-channel").on("click", function () {
