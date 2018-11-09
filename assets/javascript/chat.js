@@ -12,13 +12,14 @@ firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
 // DELETE THIS BEFORE LIVE V V
-memberID = "-LQjkI1jnHMweU_cJHxc";
+// memberID = "-LQjkI1jnHMweU_cJHxc";
 let database = firebase.database();
 
 var data = {
     user: {
     },
     channels: [],
+    friends: [],
     default: {
         channelID: "-LQfdAdsa1T1kTV-MewD"
     }
@@ -32,14 +33,28 @@ $(document).ready(function () {
         if (snapshot.val().chatChannels.length < 1) {
             database.ref("members/" + memberID).update({ chatChannels: ["-LQfdAdsa1T1kTV-MewD"] });
         }
+        if (snapshot.val().friends.length < 1) {
+            database.ref("members/" + memberID).update({ friends: ["-LQjgthR777stMT6w7HO", "-LQjkI1jnHMweU_cJHxc", "-LQnrO55nPflGBPm-RDa"] });
+        }
     });
     database.ref("members/" + memberID).on("value", function (snapshot) {
-        console.log("User Data Updated!");
         data.user = snapshot.val();
-        build.sidebar.init();
+
+        database.ref("members/").once("value").then(function (snapshot) {
+            for (p = 0; p < data.user.friends.length; p++) {
+                var friendElem = { id: "", userName: "", fullName: "" };
+                let newID = data.user.friends[p];
+                friendElem.id = newID;
+                friendElem.userName = snapshot.val()[newID].userName;
+                friendElem.fullName = snapshot.val()[newID].fullName;
+                console.log(friendElem);
+                data.friends.push(friendElem);
+            }
+            console.log(data.friends);
+            build.sidebar.init();
+        });
     });
     database.ref("channels/" + activeFocus.id).on("value", function (snapshot) {
-        console.log("Focus Data Received");
         build.focus.target(activeFocus);
     });
     $("#add-channel").on("click", function () { return handle.changeFocus("addChannel") })
@@ -61,7 +76,6 @@ var build = {
             }
         },
         chat: function (focusTarget) {
-            console.log("Chat channel targeted");
             activeFocus = focusTarget;
             focusData = {
                 name: "",
@@ -77,7 +91,6 @@ var build = {
                 focusData.public = channelDataServed.public;
                 focusData.log = channelDataServed.log;
                 focusData.type = focusTarget.type;
-                console.log("Building chat header and chat body");
                 $("#focus-header").html("");
                 $("#focus-body").html("");
                 build.focus.header(focusData);
@@ -85,11 +98,11 @@ var build = {
             });
         },
         header: function (channelData) {
+            console.log(channelData);
             inidcatorIcon = "";
             let channelInfo = $("<div class='focus-header-info'>");
             let channelInfoHTML = "";
-            let viewMembers = $("<i id='view-chat-members' class='material-icons>");
-            let notOpenOrDM = false;
+            membersIndicator = "";
             if (channelData.type === "chat") {
                 if (channelData.public === true) {
                     inidcatorIcon = "<i class='material-icons focus-header-icon'>public</i>"
@@ -104,14 +117,12 @@ var build = {
                     // "-!" => DM channel
                 } else {
                     membersIndicator = channelData.members.length;
-                    notOpenOrDM = true;
                 }
                 channelInfoHTML =
-                    "<h6 class='focus-header-name'>" + channelData.name + "</h6>" +
-                    inidcatorIcon + "<span>" + membersIndicator + "</span>";
-                if (notOpenOrDM){
-                    channelInfoHTML = channelInfoHTML + viewMembers;
-                }
+                    "<div id='channel-info-wrapper'>"+
+                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6>" +
+                    inidcatorIcon + "<span>" + membersIndicator + "</span></div>" +
+                    "<div id='add-member-section' class='right-align'><span>Add Member: </span><input><i class='material-icons blue-text text-lighten-2' id='add-member-existingChannel'>add_box</i></div></div>";
             }
             if (channelData.type === "addChannel") {
                 channelInfoHTML =
@@ -169,7 +180,6 @@ var build = {
                     $("#interact-chat-input").val("");
                 }
             });
-            console.log("Chat body built");
         },
         newChannel: function () {
             isPublic = false;
@@ -188,7 +198,7 @@ var build = {
                 "<input id='createChannel-members'><i class='material-icons blue-text text-lighten-2' id='add-member'>add_box</i><br>" +
                 "<div>" +
                 "<span>Members added</span><br>" +
-                "<div id='members-added-display'></div>"+
+                "<div id='members-added-display'></div>" +
                 "</div>" +
                 "<br>" +
                 "<button id='createChannel-submit'>Create Channel</button>" +
@@ -208,8 +218,8 @@ var build = {
                     $("#createChannel-private").removeClass("blue-text");
                 }
             });
-            $("#add-member").on("click",function(){
-                if($("#createChannel-members").val().length>0){
+            $("#add-member").on("click", function () {
+                if ($("#createChannel-members").val().length > 0) {
                     $("#members-added-display").append($("#createChannel-members").val());
                     $("#createChannel-members").val("");
                 }
@@ -221,10 +231,9 @@ var build = {
                     newChannelData.public = isPublic;
                     newChannelData.name = $("#createChannel-name").val();
                     newChannelData.members = membersAdded;
-                    newChannelData.log = [{sender:"tackIt Team", type: "text", timestamp: timeOfCreation, content: {text:"Welcome to your new tackIT channel! To get started, say something!"}}];
+                    newChannelData.log = [{ sender: "tackIt Team", type: "text", timestamp: timeOfCreation, content: { text: "Welcome to your new tackIT channel! To get started, say something!" } }];
                     newChannelData.owner = memberID;
                     newChannelData.created = timeOfCreation;
-                    console.log(newChannelData);
                     handle.addChatChannel(newChannelData);
                 }
             })
@@ -235,9 +244,9 @@ var build = {
             $("#sidebar-channels-list").html("");
             $("#sidebar-contact-list").html("");
             build.sidebar.populateChannels();
+            build.sidebar.populateContacts();
         },
         populateChannels: function () {
-            console.log("Fetch channels");
             for (q = 0; q < data.user.chatChannels.length; q++) {
                 let currentChannelId = data.user.chatChannels[q];
                 database.ref("channels/" + currentChannelId).once("value").then(function (snapshot) {
@@ -248,12 +257,27 @@ var build = {
                     itemDiv.html(sidebarElem);
                     line.append(itemDiv);
                     $("#sidebar-channels-list").append(line);
-                    $("#" + currentChannelId).on("click", function () {return handle.changeFocus(currentChannelId)});
+                    $("#" + currentChannelId).on("click", function () { return handle.changeFocus(currentChannelId) });
                 });
             }
         },
+        populateContacts: function () {
+            for (c = 0; c < data.user.friends.length; c++) {
+                let currentFriend = data.friends[c];
+                let line = $("<div class='sidebar-line'>")
+                let itemDiv = $("<div class='sidebar-item' id='" + currentFriend.id + "'>");
+                let sidebarFullNameElem = $("<span class='sidebar-item-text'>");
+                sidebarFullNameElem.text(data.friends[c].fullName);
+                itemDiv.html(sidebarFullNameElem);
+                line.append(itemDiv);
+                $("#sidebar-contacts-list").append(line);
+                // $("#" + currentChannelId).on("click", function () { return handle.changeFocus(currentChannelId) });
+            };
+        }
+
     }
 }
+
 
 var handle = {
     changeFocus: function (changeTo) {
@@ -264,20 +288,17 @@ var handle = {
         if (changeTo === "addChannel") {
             activeFocus.type = "addChannel";
         }
-        console.log(activeFocus);
         build.focus.target(activeFocus);
     },
     addChatChannel: function (toAdd) {
         newChannelKey = "";
         newChannelPost = database.ref("channels").push(toAdd)
-        database.ref("channels").on("child_added",(snapshot)=>{
-            if(snapshot.val().name === toAdd.name){
-                console.log("Looks right to me!");
+        database.ref("channels").on("child_added", (snapshot) => {
+            if (snapshot.val().name === toAdd.name) {
                 newChannelKey = newChannelPost.getKey();
-                console.log("New key: " + newChannelKey);
                 let tempChanArr = data.user.chatChannels;
                 tempChanArr.push(newChannelKey);
-                database.ref("members/"+memberID).update({chatChannels: tempChanArr});
+                database.ref("members/" + memberID).update({ chatChannels: tempChanArr });
             }
         });
     }
@@ -290,7 +311,6 @@ var chat = {
                 let priorLog = snapshot.val().log;
                 let newLog = priorLog;
                 newLog.push(chat.prepareMessage(content));
-                console.log(newLog);
                 database.ref("channels/" + dest).update({ log: newLog });
             })
         }
@@ -305,16 +325,8 @@ var chat = {
     }
 }
 
-// var suggest = {
-//     channels : function ( thusfar,  lim ) {
-//         var channelList = database.ref("channels").once("value").then((snapshot)=>{
-//             console.log(snapshot.val());
-//         })
 
-//     }
-// }
 
-// suggest.channels();
 
 
 
