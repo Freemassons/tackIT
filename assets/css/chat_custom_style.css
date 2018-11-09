@@ -157,6 +157,21 @@ i {
 #createChannel-wrapper{
     padding-left: 15px;
 }
+#addContact-wrapper{
+    padding-left: 15px;
+}
+#joinChannel-wrapper{
+    padding-left: 15px;
+}
+
+.focus-header-icon{
+    margin-left: 25px;
+}
+
+#leave-channel{
+    margin-left: 15px;
+    margin-right: 25px;
+}
 
 
 /* STYLES BY ELEMENT */
