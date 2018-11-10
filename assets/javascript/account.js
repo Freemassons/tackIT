@@ -83,11 +83,8 @@ let account = {
 
         // Check if username is taken
         let dbCon = db.connection.ref('members');
-        console.log(formUserName);
         dbCon.orderByChild('userName').equalTo(formUserName).once("value", function (snapshot) {
             if (snapshot.val()) {
-                console.log("in name");
-                console.log(snapshot.val());
                 let errorMessage = "User name already exists - please select another"
                 page.showFormErrorMessage(errorMessage);
                 validInput = false;
@@ -96,10 +93,7 @@ let account = {
 
         // Check if email is taken
         dbCon = db.connection.ref('members');
-        console.log(formEmail);
         dbCon.orderByChild('email').equalTo(formEmail).once("value", function (snapshot) {
-            console.log("in email");
-            console.log(snapshot.val());
             if (snapshot.val()) {
                 let errorMessage = "Email already exists - please use another"
                 page.showFormErrorMessage(errorMessage);
@@ -108,6 +102,8 @@ let account = {
                 if (validInput) {
                     let timeStamp = moment().unix();
                     let encryptedPW = encryptString(formPassword);
+                    account.friends.push('-LQjgthR777stMT6w7HO')
+                    console.log(account.friends);
                     confirmString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
                     let dbCon = db.connection.ref('members');
@@ -123,7 +119,7 @@ let account = {
                         status: '',
                         joined: timeStamp,
                         chatChannels: '',
-                        friends: ''
+                        friends: account.friends
                     });
 
                     // Defining this one since it's required later.
@@ -174,8 +170,9 @@ let account = {
 
             // Repopulate any changes
             account.populate();
-            page.showScreenIndex();
+            page.hideConfirmedNext();
             page.hideScreenAccount();
+            page.showScreenIndex();
             $('html, body').animate({ scrollTop: 0 }, 'slow');
         }
     },
@@ -395,7 +392,6 @@ let page = {
     },
 
     showAccountErrorMessage: function (message) {
-        console.log("test");
         $(page.selectorAccountErrorList).append('<li>' + message + '</li>');
         $(page.selectorAccountErrorMessage).show();
     },
