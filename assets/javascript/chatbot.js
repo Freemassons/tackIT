@@ -1,7 +1,7 @@
 let promptTypes = {
     WELCOME: 1,
     MAIN_MENU: 2,
-    CREATE_ACCOUNT_FOR_ME: 3,
+    CREATE_ACCOUNT: 3,
     CREATE_ACCOUNT_FOR_SOMEONE_ELSE: 4,
     CREATE_ORGANIZATION: 5,
     ADD_USER_TO_ORG: 6,
@@ -38,6 +38,7 @@ let apiGateway = {
                 else if(data.command === "createRep"){
                    chatbot.getRepoExists = false; 
                 }
+                
                 chatbot.currentPrompt.invokeCallback(result.htmlDisplayMessage);
             },
             error: function(result){
@@ -108,35 +109,32 @@ let chatbot = {
             name: promptTypes.MAIN_MENU,
             requiresSetupTask: false,
             getQuestion: function(){
-                let question = "Are you looking to get yourself setup, or someone else?  If this is for you, " +
-                "say <b>me</b>.  If this is to get someone else setup, say <b>someone else</b>. If you don't " +
-                "need setup help, but would like to create a GitHub issue, say <b>create issue<b/>";
+                let question = "If you would like to start the setup proces, say <b>setup</b>. " +
+                "If would like to create a GitHub issue, say <b>create issue<b/>";
                 if(displayText != defaultChatResponse){
                     question = displayText + question;
                 }
                 return question;
             },
             action: function(userInput){
-                if (userInput === "me"){
+                if (userInput === "setup"){
                     chatbot.targetUser = account.userName;
                     chatbot.targetEmail = account.email;
                     chatbot.targetAvatar = account.avatar;
                     chatbot.targetTeam = account.team;
-                    chatbot.setCurrentPrompt(promptTypes.CREATE_ACCOUNT_FOR_ME);
-                }
-                else if(userInput === "someone else"){
-                    chatbot.setCurrentPrompt(promptTypes.CREATE_ACCOUNT_FOR_SOMEONE_ELSE);
+                    chatbot.setCurrentPrompt(promptTypes.CREATE_ACCOUNT);
                 }
                 else if(userInput === "create issue"){
+                    chatbot.targetUser = account.userName;
+                    chatbot.targetEmail = account.email;
+                    chatbot.targetAvatar = account.avatar;
+                    chatbot.targetTeam = account.team;
                     chatbot.setCurrentPrompt(promptTypes.CREATE_ISSUE);
-                }
-                else{
-                    chatbot.setCurrentPrompt(promptTypes.INVALID_ENTRY);
                 }
             }
         },
         {
-            name: promptTypes.CREATE_ACCOUNT_FOR_ME,
+            name: promptTypes.CREATE_ACCOUNT,
             requiresSetupTask: true,
             getQuestion: function(){
                 let question = "I'm in the process of pulling up your account information to make this as " +
@@ -214,7 +212,7 @@ let chatbot = {
             },
             invokeSetupTask: function(){
                 let orgName = chatbot.targetTeam;
-    
+
                 let parameters = {
                     orgDisplayName: orgName,
                     orgName: orgName,
@@ -232,7 +230,7 @@ let chatbot = {
                 }
                 else if(chatbot.gitHubOrgExists) {
                     displayText = "It looks like your team already has the " + chatbot.targetTeam + 
-                        " GitHub organization created! <br/><br/>"
+                        " GitHub organization created!"
                 }
                 else{
                     chatbot.setCurrentPrompt(promptTypes.INVALID_ENTRY);
@@ -284,7 +282,6 @@ let chatbot = {
                 else if(chatbot.gitHubMemberOfOrg) {
                     let message = "Wow, you're one step ahead of me again. I noticed that " + chatbot.targetUser + 
                         " is already associated to the " + chatbot.targetTeam + " GitHub organization.";
-
                     let suffixText = "<br/><br/>Say <b>continue</b> to move onto the final step."
                     displayText = message + suffixText;
                 }
@@ -327,9 +324,63 @@ let chatbot = {
                 else if(chatbot.gitHubMemberOfOrg) {
                     let message = "Wow, you're one step ahead of me again. I noticed that " + chatbot.targetUser + 
                         " is already associated to the " + chatbot.targetTeam + " GitHub organization.";
-
                     let suffixText = "<br/><br/>Say <b>continue</b> to move onto the final step."
                     displayText = message + suffixText;
+                }
+                else{
+                    chatbot.setCurrentPrompt(promptTypes.INVALID_ENTRY);
+                }
+            }
+        },
+        {
+            name: promptTypes.CREATE_ISSUE,
+            requiresSetupTask: false,
+            title: "",
+            description: "",
+            repoName: "",
+            question: "",
+            getQuestion: function(){
+                if(displayText != defaultChatResponse){
+                    question = displayText;
+                }
+                else{
+                    question = "Uh oh!  It sounds like you need to create a GitHub issue. " +
+                    "Hopefully it's nothing serious.  What do you want the title of your issue to be?"
+                }
+                return question;
+            },
+            action: function(userInput){
+
+                if(this.title === ""){
+                    this.title = userInput;
+                    this.question = ""
+                    displayText = "Thanks for that information. Can you please give a brief description of your issue?";
+                }
+                else if(this.description === ""){
+                    this.description = userInput;
+                    displayText = "Last question, I promise!  What repository is this issue associated to?"
+                    this.question = "";
+                }
+                else if(this.repoName === ""){
+                    this.repoName = userInput;
+                    let parameters = {
+                        title: this.title,
+                        description: this.description,
+                        repoName: this.repoName,
+                        orgName: chatbot.targetTeam
+                    }
+                    let data = {
+                        command: "createIssue",
+                        parameters: parameters
+                    }
+                    apiGateway.callCloudFunctions(data, "callGitHub");
+                    
+                }
+            },
+            invokeCallback: function(results){
+                if(results){
+                    displayText = results;
+                    chatbot.populateText(displayText, chatbotName);
                 }
                 else{
                     chatbot.setCurrentPrompt(promptTypes.INVALID_ENTRY);
