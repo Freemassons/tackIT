@@ -11,8 +11,7 @@ var config = {
 firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
-// DELETE THIS BEFORE LIVE V V
-memberID = "-LQjkI1jnHMweU_cJHxc";
+
 let database = firebase.database();
 
 var data = {
