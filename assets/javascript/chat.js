@@ -11,8 +11,7 @@ var config = {
 firebase.initializeApp(config);
 
 let memberID = localStorage.getItem("accountId");
-// DELETE THIS BEFORE LIVE V V
-// memberID = "-LQjkI1jnHMweU_cJHxc";
+
 let database = firebase.database();
 
 var data = {
@@ -127,9 +126,16 @@ var build = {
                 }
                 channelInfoHTML =
                     "<div id='channel-info-wrapper'>" +
-                    "<div id='channel-info'><h6 class='focus-header-name'>" + channelData.name + "</h6></div>" + "<div id='members-section'><div id='members-indicator-section'>" +
-                    "<span class='focus-header-text'>" + membersIndicator + "</span>" + inidcatorIcon + "<div id='member-list-hover'></div>" + "</div></div>"
-                    + "</div>";
+                    "<div id='channel-info'>" +
+                    "<h4 class='focus-header-name'>" + channelData.name + "</h4><br>" +
+                    "<div id='members-section'>" +
+                    "<div id='members-indicator-section'>" +
+                    "<span id='focus-header-numMembers' class='focus-header-text'>" + membersIndicator + "</span>" + inidcatorIcon +
+                    "<div id='member-list-hover'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>";
             }
             if (channelData.type === "addChannel") {
                 channelInfoHTML =
@@ -144,30 +150,32 @@ var build = {
                     thisMember = channelData.members[l];
                     database.ref("members/" + thisMember).once("value").then(function (snapshot) {
                         let memberFullNameElem = $("<b>").text(snapshot.val().fullName).append($("<br>"));
-                        let memberUserNameElem = $("<b>").text("'" + snapshot.val().userName + "'");
+                        let memberUserNameElem = $("<b>").text(snapshot.val().userName);
                         let memberDiv = $("<div>");
-                        memberDiv.append(memberFullNameElem);
+                        // memberDiv.append(memberFullNameElem);
                         memberDiv.append(memberUserNameElem);
-                        memberDiv.append($("<div class='divider'>"));
+                        memberDiv.append($("<div class='divider blue blue-darken-1'>"));
                         $("#member-list-hover").append(memberDiv);
                     });
                 }
             }
             channelInfo.html(channelInfoHTML);
             $("#focus-header").append(channelInfo);
-            if (channelData.type==="chat"&&channelData.members[0] === "-*"){
+            if (channelData.type === "chat" && channelData.members[0] === "-*") {
                 console.log()
                 let membersAreAll = $("<b>").text("ALL")
                 $("#member-list-hover").html(membersAreAll);
-                $("#add-member-section").css("display","none");
+                $("#add-member-section").css("display", "none");
             }
-            if (channelData.type==="chat"&&channelData.members[0] != "-*"){
-                let extraHTML = "<div id='add-member-section' class='right-align'><span class='focus-header-text'>Leave This Channel</span>" +
-                "<i class='material-icons red-text text-darken-1 focus-header-icon' id='leave-channel'>remove_circle</i>" +
-                "<span class='focus-header-text'>Add Member: </span><input id='add-member-username'>" +
-                "<i class='material-icons blue-text text-lighten-2 focus-header-icon' id='add-member-existingChannel'>add_box</i>" +
-                "</div>";
-                channelInfo.append(extraHTML);
+            if (channelData.type === "chat" && channelData.members[0] != "-*") {
+                let extraHTML =
+                    "<div id='add-member-section' class='right-align'>" +
+                    "<span id='leave-channel-label'class='focus-header-text-2'>Leave This Channel</span>" +
+                    "<i class='material-icons red-text text-darken-1 focus-header-icon-2' id='leave-channel'>remove_circle</i><br>" +
+                    "<input id='add-member-username' placeholder='Add a member by username'>" +
+                    "<i class='material-icons blue-text text-lighten-2 focus-header-icon' id='add-member-existingChannel'>add_box</i>" +
+                    "</div>";
+                $("#channel-info-wrapper").append(extraHTML);
             }
 
             $("#view-members").off();
@@ -182,7 +190,7 @@ var build = {
             $("#add-member-existingChannel").on("click", function (event) {
                 userNameQuery = $("#add-member-username").val().toLowerCase();
                 $("#add-member-username").val("");
-                if (userNameQuery.length > 1){
+                if (userNameQuery.length > 1) {
                     database.ref("members/").once("value").then(function (snapshot) {
                         for (var i in snapshot.val()) {
                             if (snapshot.val()[i].userName.slice(0, (userNameQuery.length)).toLowerCase() == userNameQuery.toLowerCase()) {
@@ -211,12 +219,12 @@ var build = {
             if (channelData.log.length > 0) {
                 for (p = 0; p < channelData.log.length; p++) {
                     let msgData = channelData.log[p];
-                    let timeSent = moment(msgData.timestamp, "MM/DD/YY HH:mm").format("hh:mm A");
+                    let timeSent = moment(msgData.timestamp, "MM/DD/YY HH:mm").format("MM/DD hh:mm A");
                     let msgRow = $("<div class='chat-row'>");
                     let msgBlock = $("<div class='chat-message'>");
                     let msgContent = $("<div class='chat-message-content'>");
                     let msgCaption = $("<div class='chat-message-caption'>");
-                    let msgSender = $("<b class='chat-message-meta' class='blue-text text-darken-3'>").text("  " + msgData.sender);
+                    let msgSender = $("<b class='blue-text text-darken-3'>").text("" + msgData.sender).append($("<br>"));
                     let msgTimestamp = $("<span class='chat-message-meta'>").text("  " + timeSent);
                     msgCaption.append(msgSender);
                     msgCaption.append(msgTimestamp);
@@ -262,61 +270,100 @@ var build = {
             $("#createChannel-submit").off();
 
             isPublic = false;
+            showCreate = true;
             membersAdded = [memberID];
             createChannelHTML =
+                "<div id='create-join-wrapper'>" +
+                "<div>" +
+                "<button id='show-create'> Create New Channel</button>" +
+                "<button id='show-join'> Join Existing Channel </button> <br>" +
+                // "<div class='divider'></div>" +
+                "</div>" +
                 "<div id='createChannel-wrapper'>" +
-                "<div><b>Create New Channel</b><br>" +
+                "<div>" +
+                "<b>Privacy Setting</b><br>" +
                 "<i id ='createChannel-private' class='material-icons blue-text'>lock_outline</i>" +
-                "<i id ='createChannel-public' class='material-icons'>public</i><br>" +
-                "<b>Privacy</b>" +
+                "<i id ='createChannel-public' class='material-icons'>public</i>" +
+                "<br><span id='priv-sel'>Private</span>" +
                 "</div><br>" +
-                "<div class='focus-body-content'>" +
                 "<b>Channel Name</b><br>" +
                 "<input id='createChannel-name'><br><br>" +
                 "<b>Add Members</b><br>" +
-                // "<input id='createChannel-members'><i class='material-icons blue-text text-lighten-2' id='add-member'>add_box</i><br>" + 
                 "<span><b>Click a contact on the sidebar to add them</b></span><br>" +
                 "<div>" +
-                "<span>Members added</span><br>" +
+                "<br>" +
                 "<div id='members-added-display'></div>" +
                 "</div>" +
                 "<br>" +
                 "<button id='createChannel-submit'>Create Channel</button>" +
-                "</div></div><br>" +
-                "<div class='divider'></div><br>" +
+                "</div>" +
                 "<div id='joinChannel-wrapper'>" +
-                "<span>OR</span><br><br>" +
-                "<b>Enter The Name of The Channel You Want to Join</b><br><br>" +
+                "<br>" +
+                "<h5>Join Existing Channel</h5><br><br>" +
                 "<input id='join-channel-input'><i class='material-icons blue-text text-lighten-2' id='join-channel-go'>add_box</i>" +
+                "</div>" +
                 "</div>";
             $("#focus-body").html(createChannelHTML);
+            $("#joinChannel-wrapper").css("display", "none");
+
+            $("#show-create").off();
+            $("#show-create").on("click", function () {
+                if (!showCreate) {
+                    $("#joinChannel-wrapper").css("display", "none");
+                    $("#createChannel-wrapper").css("display", "block");
+                }
+                showCreate = true;
+            });
+
+            $("#show-join").off();
+            $("#show-join").on("click", function () {
+                if (showCreate) {
+                    $("#createChannel-wrapper").css("display", "none");
+                    $("#joinChannel-wrapper").css("display", "block");
+                }
+                showCreate = false;
+            })
+
+            $("#createChannel-private").off();
             $("#createChannel-private").on("click", function () {
                 if (isPublic) {
                     isPublic = false;
                     $("#createChannel-private").attr("class", "material-icons blue-text");
                     $("#createChannel-public").removeClass("blue-text");
+                    $("#priv-sel").text("");
+                    $("#priv-sel").text("Private");
                 }
             });
 
+            $("#createChannel-public").off();
             $("#createChannel-public").on("click", function () {
                 if (!isPublic) {
                     isPublic = true;
                     $("#createChannel-public").attr("class", "material-icons blue-text");
                     $("#createChannel-private").removeClass("blue-text");
+                    $("#priv-sel").text("");
+                    $("#priv-sel").text("Public");
                 }
             });
+
+            
+            $("#add-member").off();
             $("#add-member").on("click", function () {
                 if ($("#createChannel-members").val().length > 0) {
                     $("#members-added-display").append($("#createChannel-members").val());
                     $("#createChannel-members").val("");
                 }
-            })
+            });
+
+            $(".sidebar-contact").off();
             $(".sidebar-contact").on("click", function (event) {
                 if (membersAdded.indexOf(event.currentTarget.id) === -1) {
                     membersAdded.push(event.currentTarget.id);
                     $("#members-added-display").append(event.currentTarget.innerText + "<br>");
                 };
-            })
+            });
+
+            $("#createChannel-submit").off();
             $("#createChannel-submit").on("click", function () {
                 if ($("#createChannel-name").val().length > 0) {
                     $(".sidebar-contact").off();
@@ -331,6 +378,13 @@ var build = {
                     newChannelData.created = timeOfCreation;
                     handle.addChatChannel(newChannelData);
                 }
+            });
+
+            $("#join-channel-go").off();
+            $("#join-channel-go").on("click", function(){
+                let searchTerm = $("#join-channel-input").val();
+                handle.joinChatChannel(searchTerm);
+                $("#join-channel-input").val("");
             })
         },
         newContact: function () {
@@ -343,7 +397,9 @@ var build = {
                 "<br><div id='search-results'><br></div>" +
                 "</div>";
             $("#focus-body").html(addContactHTML);
-            $("#addContact-userName-submit").on("click", function (event) {
+
+            $("#addContact-userName-submit").off();
+            $("#addContact-userName-submit").on("click", function () {
                 userNameQuery = $("#addContact-username").val().toLowerCase();
                 database.ref("members/").once("value").then(function (snapshot) {
                     console.log(snapshot.val());
@@ -354,7 +410,7 @@ var build = {
                             contactResultElem.append($("<br>"));
                             contactResultElem.text("Added: " + snapshot.val()[i].userName);
                             $("#search-results").append(contactResultElem);
-                            handle.addContact(i);
+                            if (data.user.friends.indexOf(i) === -1) { handle.addContact(i) }
                         }
                     }
                 })
@@ -401,7 +457,6 @@ var build = {
                 // $("#" + currentChannelId).on("click", function () { return handle.changeFocus(currentChannelId) });
             };
         }
-
     }
 }
 
@@ -446,16 +501,24 @@ var handle = {
             database.ref("members/" + newMember).update({ chatChannels: tempArr })
         })
     },
-    joinChatChannel: function (toJoin) {
-        database.ref("channels/" + toJoin).once("value").then(function (snapshot) {
-            tempMemberArr = snapshot.val().members;
-            if (tempMemberArr.indexOf(newMember) === -1) {
-                tempMemberArr.push(memberID);
-                database.ref("channels/" + toJoin).update({ members: tempMemberArr });
+    joinChatChannel: function (toJoinName) {
+        database.ref("channels").once("value").then(function (snapshot) {
+            channelList = snapshot.val();
+            for (var g in channelList) {
+                if (channelList[g].name.slice(0, (toJoinName.length)).toLowerCase() == toJoinName.toLowerCase()) {
+                    let toJoin = g;
+                    database.ref("channels/" + toJoin).once("value").then(function (snapshot) {
+                        tempMemberArr = snapshot.val().members;
+                        if (tempMemberArr.indexOf(memberID) === -1 && snapshot.val().public) {
+                            tempMemberArr.push(memberID);
+                            database.ref("channels/" + toJoin).update({ members: tempMemberArr });
+                        }
+                    });
+                    data.user.chatChannels.push(toJoin);
+                    database.ref("members/" + memberID).update({ chatChannels: data.user.chatChannels })
+                }
             }
         });
-        data.user.chatChannels.push(toJoin);
-        database.ref("members/" + memberID).update({ chatChannels: data.user.chatChannels })
     },
     leaveChatChannel: function (toLeave) {
         database.ref("channels/" + toLeave).once("value").then(function (snapshot) {
@@ -472,24 +535,15 @@ var handle = {
     },
 
     addContact: function (toAddID) {
-        console.log("adding");
-        console.log("...");
         database.ref("members/" + toAddID).once("value").then(function (snapshot) {
             let tempContactList = snapshot.val().friends;
-            console.log(tempContactList);
-            console.log("...");
             tempContactList.push(memberID);
             console.log(tempContactList);
-            console.log("...");
             database.ref("members/" + toAddID).update({ friends: tempContactList });
         });
         database.ref("members/" + memberID).once("value").then(function (snapshot) {
             let tempContactList = snapshot.val().friends;
-            console.log(tempContactList);
-            console.log("...");
             tempContactList.push(toAddID);
-            console.log(tempContactList);
-            console.log("...");
             database.ref("members/" + memberID).update({ friends: tempContactList });
         });
     }
@@ -515,12 +569,3 @@ var chat = {
         return logPacket;
     }
 }
-
-
-
-
-
-
-
-
-
