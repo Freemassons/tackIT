@@ -136,7 +136,7 @@ let account = {
                     emailData.template_params.full_name = $("#input-name").val();
                     emailData.template_params.user_name = $("#input-nick").val();
                     emailData.template_params.email = $("#input-email").val();
-                    emailData.template_params.unique_link = "http://tackit.freemasonsnh.com/index.html?confirm=" + confirmString + "&memberName=" + account.userName;
+                    emailData.template_params.unique_link = "https://freemassons.github.io/tackIT/index.html?confirm=" + confirmString + "&memberName=" + account.userName;
                     sendMail(emailData);
 
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
